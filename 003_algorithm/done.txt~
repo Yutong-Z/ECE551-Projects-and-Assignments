@@ -1,7 +1,0 @@
-1.7 from AoP
-
-Count from 0 to (N+1) (inclusive), for each number (x) you count,
-      Count from 0 to (N+1)-x (inclusive), for each number (y) you count,
-      	    If x+y=N, then place a RED square at (x,y).
-	    If x+y=N+1 and y is even, then place a GREEN square at (x,y).
-	    If x+y=N+1 and y is not even, then place a BLUE square at (x,y).
