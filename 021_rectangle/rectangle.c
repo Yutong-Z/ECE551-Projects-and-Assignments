@@ -26,16 +26,12 @@ typedef struct _rectangle rectangle;
 
 rectangle canonicalize(rectangle r) {
   //WRITE THIS FUNCTION
-  if (r.x < 0) {
-    r.x = r.x * (-1);
-  }
-  if (r.y < 0) {
-    r.y = r.y * (-1);
-  }
   if (r.width < 0) {
+    r.x = r.x + r.width;
     r.width = r.width * (-1);
   }
   if (r.height < 0) {
+    r.y = r.y + r.height;
     r.height = r.height * (-1);
   }
   return r;
