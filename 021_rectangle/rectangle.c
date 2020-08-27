@@ -45,17 +45,11 @@ rectangle intersection(rectangle r1, rectangle r2) {
   int right = min(r1.x + r1.width, r2.x + r2.width);
   int bottom = max(r1.y, r2.y);
   int top = min(r1.y + r1.height, r2.y + r2.height);
-  if (top <= bottom) {
+  r1.height = top - bottom;
+  r1.width = right - left;
+  if (r1.height < 0 || r1.width < 0) {
     r1.height = 0;
-  }
-  else {
-    r1.height = top - bottom;
-  }
-  if (right <= left) {
     r1.width = 0;
-  }
-  else {
-    r1.width = right - left;
   }
   r1.x = left;
   r1.y = bottom;
