@@ -1,6 +1,6 @@
-Grading at 08/27/2020:02:32:02.427672
-For commit ID 34cdaf93f12dde9932bdaedff6b7d3f98a4866ae
-Grading at Wed Aug 26 22:32:02 EDT 2020
+Grading at 08/27/2020:02:37:42.743511
+For commit ID c4fe726892135cbb4327f79d6133e3c74dd19ff8
+Grading at Wed Aug 26 22:37:42 EDT 2020
 Attempting to compile rectangle.c
 Tring to run rectangle
 Line_2_did_not_match
