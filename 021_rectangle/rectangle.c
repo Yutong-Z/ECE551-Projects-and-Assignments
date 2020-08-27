@@ -49,22 +49,21 @@ rectangle intersection(rectangle r1, rectangle r2) {
   int right = min(r1.x + r1.width, r2.x + r2.width);
   int bottom = max(r1.y, r2.y);
   int top = min(r1.y + r1.height, r2.y + r2.height);
-  rectangle ri;
   if (top <= bottom) {
-    ri.height = 0;
+    r1.height = 0;
   }
   else {
-    ri.height = top - bottom;
+    r1.height = top - bottom;
   }
   if (right <= left) {
-    ri.width = 0;
+    r1.width = 0;
   }
   else {
-    ri.width = right - left;
+    r1.width = right - left;
   }
-  ri.x = left;
-  ri.y = bottom;
-  return ri;
+  r1.x = left;
+  r1.y = bottom;
+  return r1;
 }
 
 //You should not need to modify any code below this line
