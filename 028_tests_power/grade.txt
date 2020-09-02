@@ -1,0 +1,55 @@
+Grading at 09/02/2020:02:06:02.348869
+For commit ID 78fa9e03e6ba10f3c778ac451f9f8e84fb27e34c
+Grading at Tue Sep  1 22:06:01 EDT 2020
+**Testing broken implementation 10 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing broken implementation 11 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing broken implementation 1 **
+-------------------------------------
+
+I found broken program with input (0, 2)!
+**Testing broken implementation 2 **
+-------------------------------------
+
+I found broken program with input (2, 0)!
+**Testing broken implementation 3 **
+-------------------------------------
+
+I found broken program with input (0, 0)!
+**Testing broken implementation 4 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing broken implementation 5 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing broken implementation 6 **
+-------------------------------------
+
+I found broken program with input (0, 2)!
+**Testing broken implementation 7 **
+-------------------------------------
+
+I found broken program with input (0, 2)!
+**Testing broken implementation 8 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing broken implementation 9 **
+-------------------------------------
+
+I found broken program with input (65535, 10)!
+**Testing correct implementation **
+-------------------------------------
+
+
+All tests were ok.
+
+
+Overall Grade: PASSED
