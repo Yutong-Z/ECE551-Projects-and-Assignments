@@ -15,7 +15,7 @@ int FindMax(int * array, int size) {
 
 int * CountChar(FILE * f, int * toCount) {
   int c;
-  while ((c = fgetc(f) != EOF)) {
+  while ((c = fgetc(f)) != EOF) {
     if (isalpha(c)) {
       c = tolower(c);
       c -= 'a';
