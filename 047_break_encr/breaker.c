@@ -48,7 +48,7 @@ int main(int argc, char ** argv) {
 
   // 'e' is 'a'+4
   int key = (m - 4 + 26) % 26;
-  fprintf(stdout, "The key is %d\n", key);
+  fprintf(stdout, "%d\n", key);
 
   if (fclose(f) != 0) {
     perror("Failed to close the input file!");
