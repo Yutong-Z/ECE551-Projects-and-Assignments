@@ -20,7 +20,7 @@ int * CountChar(FILE * f, int * toCount) {
       c = tolower(c);
       c -= 'a';
       if ((c >= 0) && (c < 26)) {
-        toCount[(int)c] += 1;
+        toCount[c] += 1;
       }
       else {
         printf("Encountered unrecognizable character!");
