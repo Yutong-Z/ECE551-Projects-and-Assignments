@@ -60,7 +60,7 @@ country_t parseLine(char * line) {
 
 void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
   //WRITE ME
-  if ((data == NULL) || (n_days < 7)) {
+  if (data == NULL || n_days < 7) {
     fprintf(stderr, "n_days less than 7.\n");
     exit(EXIT_FAILURE);
   }
@@ -68,8 +68,12 @@ void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
   double x = 0;
   for (size_t i = 0; i < (n_days - 6); i++) {
     for (size_t j = 0; j <= 6; j++) {
-      x = (double)(data[i + j]) / 7;
-      if ((x != 0) && ((total + x) <= total)) {
+      if (data[i + j] < 0) {
+        fprintf(stderr, "Negative population on data[%zu]", i + j);
+        exit(EXIT_FAILURE);
+      }
+      x = (double)(data[i + j]) / 7;  //Check truncate
+      if (x > 0 && (total + x) <= total) {
         fprintf(stderr, "double Avg[%zu] overflows.\n", i);
         exit(EXIT_FAILURE);
       }
