@@ -5,27 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Cite below function: Page 194 of AoP */
-/*
-void copyString(char * dest, const char * src, size_t n) {
-  char * p1 = dest;
-  const char * p2 = src;
-  char * stop = dest + n;
-  while (*p2 != '\0' && p1 != stop) {
-    *p1 = *p2;
-    p1++;
-    p2++;
-  }
-  if (p1 != stop) {
-    *p1 = '\0';
-  }
-  else {
-    fprintf(stderr, "Too many characters in the line.\n");
-    exit(EXIT_FAILURE);
-  }
-}
-*/
-
 country_t parseLine(char * line) {
   country_t ans;
   ans.name[0] = '\0';
@@ -93,17 +72,15 @@ void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
     fprintf(stderr, "n_days less than 7.\n");
     exit(EXIT_FAILURE);
   }
-  double total = 0;
-  double x = 0;
+  double total;
+  double x;
   for (size_t i = 0; i < (n_days - 6); i++) {
-    for (size_t j = 0; j <= 6; j++) {
-      if (data[i + j] < 0) {
-        fprintf(stderr, "Negative population on data[%zu]", i + j);
-        exit(EXIT_FAILURE);
-      }
+    // n_day-6 caused output n_days-7 number of avg in testing ????
+    total = 0;
+    for (size_t j = 0; j < 7; j++) {
       x = (double)(data[i + j]) / 7;  // 32-bit int casting to 64-bit double
       if (x > 0 && (total + x) <= total) {
-        fprintf(stderr, "double Avg[%zu] overflows.\n", i);
+        fprintf(stderr, "Overflow caused at double Avg[%zu].\n", i);
         exit(EXIT_FAILURE);
       }
       else {
@@ -111,12 +88,28 @@ void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
       }
     }
     avg[i] = total;
-    total = 0;
   }
 }
 
 void calcCumulative(unsigned * data, size_t n_days, uint64_t pop, double * cum) {
-  //WRITE ME
+  if (data == NULL || n_days == 0) {
+    fprintf(stderr, "Empty line.\n");
+    exit(EXIT_FAILURE);
+  }
+  if (pop == 0) {
+    fprintf(stderr, "Zero population.\n");
+    exit(EXIT_FAILURE);
+  }
+  double density;
+  cum[0] = data[0] / (double)pop * 100000;
+  for (size_t i = 1; i < n_days; i++) {
+    density = data[i] / (double)pop * 100000;
+    if (density > 0 && (cum[i - 1] + density) <= cum[i - 1]) {
+    }
+    else {
+      cum[i] = cum[i - 1] + density;
+    }
+  }
 }
 
 void printCountryWithMax(country_t * countries,
