@@ -60,6 +60,26 @@ country_t parseLine(char * line) {
 
 void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
   //WRITE ME
+  if ((data == NULL) || (n_days < 7)) {
+    fprintf(stderr, "n_days less than 7.\n");
+    exit(EXIT_FAILURE);
+  }
+  double total = 0;
+  double x = 0;
+  for (size_t i = 0; i < (n_days - 6); i++) {
+    for (size_t j = 0; j <= 6; j++) {
+      x = (double)(data[i + j]) / 7;
+      if ((x != 0) && ((total + x) <= total)) {
+        fprintf(stderr, "double Avg[%zu] overflows.\n", i);
+        exit(EXIT_FAILURE);
+      }
+      else {
+        total += x;
+      }
+    }
+    avg[i] = total;
+    total = 0;
+  }
 }
 
 void calcCumulative(unsigned * data, size_t n_days, uint64_t pop, double * cum) {
