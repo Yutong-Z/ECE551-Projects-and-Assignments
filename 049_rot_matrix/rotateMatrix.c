@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Read the file, get a 12*10 Matrix
+char ** readMatrix(FILE * f, char ** Matrix) {
+  char line[12];
+  int i = 0;
+  while (fgets(line, 12, f) != NULL) {
+    if (strchr(line, '\n') == NULL) {
+      fprintf(stderr, "Line is too long!\n");
+      exit(EXIT_FAILURE);
+    }
+    if (line[10] != '\n') {
+      fprintf(stderr, "Line is too short!\n");
+      exit(EXIT_FAILURE);
+    }
+    if (i >= 10) {
+      fprintf(stderr, "Too many lines!\n");
+      exit(EXIT_FAILURE);
+    }
+    strncpy(Matrix[i], line, 12);  //copy line to row in Matrix
+    // To check if next line less than 11 elements in next loop.
+    line[10] = '0';
+    i++;  // i=10 when finish loop.
+  }
+  if (i != 10) {
+    fprintf(stderr, "Too less lines!\n");
+    exit(EXIT_FAILURE);
+  }
+  return Matrix;
+}
+//Rotate the 12*10 matrix
+void roMatrix(char ** Matrix) {
+  char str[12];
+  str[10] = '\n';
+  str[11] = '\0';
+  for (int j = 0; j < 10; j++) {
+    for (int i = 0; i < 10; i++) {
+      str[9 - i] = Matrix[i][j];
+    }
+    fprintf(stdout, "%s", str);
+  }
+}
+
+int main(int argc, char ** argv) {
+  if (argc != 2) {
+    fprintf(stderr, "Useage: ./rotateMatrix filename\n");
+    return EXIT_FAILURE;
+  }
+  FILE * f = fopen(argv[1], "r");
+  if (f == NULL) {
+    perror("Could not open file!");
+    return EXIT_FAILURE;
+  }
+  char row0[12];
+  char row1[12];
+  char row2[12];
+  char row3[12];
+  char row4[12];
+  char row5[12];
+  char row6[12];
+  char row7[12];
+  char row8[12];
+  char row9[12];
+  char * Matrix[10] = {row0, row1, row2, row3, row4, row5, row6, row7, row8, row9};
+  readMatrix(f, Matrix);
+  roMatrix(Matrix);
+  if (fclose(f) != 0) {
+    perror("Failed to close the input file!");
+    return EXIT_FAILURE;
+  }
+  return EXIT_SUCCESS;
+}
