@@ -1,6 +1,6 @@
-Grading at 09/19/2020:02:25:35.985958
-For commit ID 5be067378bf1b45ffa0190c1ea5184b6ffdb5d1e
-Grading at Fri Sep 18 22:25:35 EDT 2020
+Grading at 09/21/2020:02:07:04.116282
+For commit ID 8d42abf99563ecf3e97e45917c2f5673085fc542
+Grading at Sun Sep 20 22:07:03 EDT 2020
 Doing some basic checking for your submission.
 
 Checking that your code compiles
@@ -18,17 +18,8 @@ Your file matched the expected output
 Passed
 
 Testing ./printRunningAvg population.csv daily_cases.csv
-Line_2_did_not_match
-Line_4_did_not_match
-Line_6_did_not_match
-Line_8_did_not_match
-Line_10_did_not_match
-Line_12_did_not_match
-Line_14_did_not_match
-Line_16_did_not_match
-Line_18_did_not_match
-Your file did not match the expected ouput
-Failed
+Your file matched the expected output
+Passed
 
 Testing ./printCumulative population.csv daily_cases.csv
 Your file matched the expected output
