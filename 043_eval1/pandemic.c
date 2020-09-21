@@ -121,21 +121,29 @@ void printCountryWithMax(country_t * countries,
     fprintf(stderr, "Empty data.\n");
     exit(EXIT_FAILURE);
   }
+  // Array of country's index with max cases for each days
+  size_t country_idx_days[n_days];
   for (size_t i = 0; i < n_days; i++) {
-    //char country_name[64];
-    //unsigned number_cases;
     size_t country_idx = 0;
     for (size_t j = 1; j < n_countries; j++) {
       if (data[country_idx][i] < data[j][i]) {
         country_idx = j;
       }
     }
-    //strncpy(country_name, countries[country_idx].name, 64);
-    //destination and source are both char 64, don't need to check '\0' here.
-    // number_cases = data[country_idx][i];
-    // printf("%s has the most daily cases with %u\n", country_name, number_cases);
-    printf("%s has the most daily cases with %u\n",
-           countries[country_idx].name,
-           data[country_idx][i]);
+    // Country's index with max cases in day i
+    country_idx_days[i] = country_idx;
   }
+  size_t day_idx = 0;
+  unsigned max = data[country_idx_days[0]][0];
+  unsigned curr;
+  for (size_t i = 1; i < n_days; i++) {
+    curr = data[country_idx_days[i]][i];
+    if (max < curr) {
+      day_idx = i;
+      max = curr;
+    }
+  }
+  printf("%s has the most daily cases with %u\n",
+         countries[country_idx_days[day_idx]].name,
+         max);
 }
