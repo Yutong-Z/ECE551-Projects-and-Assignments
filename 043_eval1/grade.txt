@@ -1,6 +1,6 @@
-Grading at 09/21/2020:14:32:09.815282
-For commit ID f906b1fe63b13a6e003a37035ff76cd3722b316d
-Grading at Mon Sep 21 10:32:09 EDT 2020
+Grading at 09/22/2020:20:31:37.817196
+For commit ID 5506b7de64603a75678effbd5ea2c52da9f383d4
+Grading at Tue Sep 22 16:31:37 EDT 2020
 Doing some basic checking for your submission.
 
 Checking that your code compiles
@@ -13,19 +13,19 @@ The code compiled (good)
 
 Checking with the provided test cases
 
-Testing ./printCountries population.csv 
+Testing ./printCountries pop.csv 
 Your file matched the expected output
 Passed
 
-Testing ./printRunningAvg population.csv daily_cases.csv
+Testing ./printRunningAvg pop.csv daily.csv
 Your file matched the expected output
 Passed
 
-Testing ./printCumulative population.csv daily_cases.csv
+Testing ./printCumulative pop.csv daily.csv
 Your file matched the expected output
 Passed
 
-Testing ./printDailyMax population.csv daily_cases.csv
+Testing ./printDailyMax pop.csv daily.csv
 Your file matched the expected output
 Passed
 
