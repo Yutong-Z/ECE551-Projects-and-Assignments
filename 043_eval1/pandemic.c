@@ -120,6 +120,10 @@ void calcCumulative(unsigned * data, size_t n_days, uint64_t pop, double * cum) 
   double density;
   cum[0] = data[0] / (double)pop * 100000;
   for (size_t i = 1; i < n_days; i++) {
+    if (cum[i - 1] > 100000) {
+      fprintf(stderr, "Total case number larger than population.\n");
+      exit(EXIT_FAILURE);
+    }
     density = data[i] / (double)pop * 100000;  //number of cases day[i] per 100,000 people
     if (density > 0 && (cum[i - 1] + density) <= cum[i - 1]) {
     }
@@ -167,6 +171,10 @@ void printCountryWithMax(country_t * countries,
       day_idx = i;
       max = curr;
     }
+  }
+  if (countries[country_idx_days[day_idx]].population < max) {
+    fprintf(stderr, "Maximum case number larger than population.\n");
+    exit(EXIT_FAILURE);
   }
   printf("%s has the most daily cases with %u\n",
          countries[country_idx_days[day_idx]].name,
