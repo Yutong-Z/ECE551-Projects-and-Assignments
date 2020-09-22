@@ -8,9 +8,11 @@
 
 country_t parseLine(char * line) {
   /* 
-     This function is to parse line
-     and to return a struct with country name and population in that line.  
-  */
+   This function is to parse line
+   and to return a country_t struct data with country name and population in that line.  
+   input: line: the line to parse
+   output: ans: parsed data with 64 length string ans.name and uint64_t ans.population
+   */
   country_t ans;
   ans.name[0] = '\0';
   ans.population = 0;
@@ -62,7 +64,7 @@ country_t parseLine(char * line) {
     exit(EXIT_FAILURE);
   }
   if (*end != '\0' && *end != '\n') {
-    // There is a newline after everything.
+    // There might be a newline after everything.
     fprintf(stderr, "Further characters after cases number %s in %s\n", end, str);
     exit(EXIT_FAILURE);
   }
@@ -72,8 +74,11 @@ country_t parseLine(char * line) {
 
 void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
   /*
-    This function is to calculate the seven-day running average of case data for each cuntry.
-  */
+   This function is to calculate the seven-day running average of cases with given data.
+   data: an array of daily case data
+   n_days: the number of days over which the data is measured
+   avg: an array of double to write the result of calculation
+   */
   if (data == NULL || n_days < 7) {
     fprintf(stderr, "n_days less than 7.\n");
     exit(EXIT_FAILURE);
@@ -97,18 +102,25 @@ void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
 }
 
 void calcCumulative(unsigned * data, size_t n_days, uint64_t pop, double * cum) {
+  /*
+    This function is to calculates the cumulative number of cases that day per 100,000 people with given data of a country.
+    data: an array of daily case data
+    n_days: the number of days over which the data is measured
+    pop: the population for the country (Larger than 0)
+    cum: array of doule to write the result
+   */
   if (data == NULL || n_days == 0) {
     fprintf(stderr, "Empty line.\n");
     exit(EXIT_FAILURE);
   }
-  if (pop == 0) {
-    fprintf(stderr, "Zero population.\n");
+  if (pop <= 0) {
+    fprintf(stderr, "Zero or negative population.\n");
     exit(EXIT_FAILURE);
   }
   double density;
   cum[0] = data[0] / (double)pop * 100000;
   for (size_t i = 1; i < n_days; i++) {
-    density = data[i] / (double)pop * 100000;
+    density = data[i] / (double)pop * 100000;  //number of cases day[i] per 100,000 people
     if (density > 0 && (cum[i - 1] + density) <= cum[i - 1]) {
     }
     else {
@@ -121,6 +133,15 @@ void printCountryWithMax(country_t * countries,
                          size_t n_countries,
                          unsigned ** data,
                          size_t n_days) {
+  /*
+    This function is to finds the maximum number of daily cases
+    of all countries represented in the data, over the entire time period
+    and to print the result.
+    countries: array of country_t, that contains name and population data of each country in the array
+    n_countries: number of countries in array countries
+    data: 2-D array of data, with each country's data representing a row
+    n_days: number of days in data (number of element in each row of data)
+   */
   if (countries == NULL || n_countries == 0 || data == NULL || n_days == 0) {
     fprintf(stderr, "Empty data.\n");
     exit(EXIT_FAILURE);
@@ -134,7 +155,7 @@ void printCountryWithMax(country_t * countries,
         country_idx = j;
       }
     }
-    // Country's index with max cases in day i
+    // Index of country with max cases in day i
     country_idx_days[i] = country_idx;
   }
   size_t day_idx = 0;
