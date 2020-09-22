@@ -7,6 +7,10 @@
 #include <string.h>
 
 country_t parseLine(char * line) {
+  /* 
+     This function is to parse line
+     and to return a struct with country name and population in that line.  
+  */
   country_t ans;
   ans.name[0] = '\0';
   ans.population = 0;
@@ -14,7 +18,7 @@ country_t parseLine(char * line) {
     fprintf(stderr, "Empty line.\n");
     exit(EXIT_FAILURE);
   }
-  // Country name part
+  // Parse country name part
   int i = 0;
   while ((line[i] != ',') && (line[i] != '\0')) {
     ans.name[i] = line[i];
@@ -33,21 +37,19 @@ country_t parseLine(char * line) {
     exit(EXIT_FAILURE);
   }
   ans.name[i] = '\0';
-  // Number part
+  // Parse population number  part
   i++;
   if (line[i] == '-') {
     fprintf(stderr, "Negative number of cases.\n");
     exit(EXIT_FAILURE);
   }
-  /*
-  char str[21];  // length 21 to ULLONG_MAX = 18446744073709551615\0
-  copyString(str, line + i, 21);
-  */
+
   /* Cite below part: manual page of strtol */
   char * str = line + i;
   char * end;
   errno = 0;
-  // convert numerical characters into unsigned long long int
+  // Convert numerical characters into unsigned long long int
+  // ULLONG_MAX = 2^64-1  = 18446744073709551615
   ans.population = strtoull(str, &end, 10);
   if ((errno == ERANGE && (ans.population == ULLONG_MAX || ans.population == 0)) ||
       (errno != 0 && ans.population == 0)) {
@@ -69,6 +71,9 @@ country_t parseLine(char * line) {
 }
 
 void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
+  /*
+    This function is to calculate the seven-day running average of case data for each cuntry.
+  */
   if (data == NULL || n_days < 7) {
     fprintf(stderr, "n_days less than 7.\n");
     exit(EXIT_FAILURE);
@@ -76,7 +81,6 @@ void calcRunningAvg(unsigned * data, size_t n_days, double * avg) {
   double total;
   double x;
   for (size_t i = 0; i < (n_days - 6); i++) {
-    // n_day-6 caused output n_days-7 number of avg in testing ????
     total = 0;
     for (size_t j = 0; j < 7; j++) {
       x = (double)(data[i + j]) / 7;  // 32-bit int casting to 64-bit double
