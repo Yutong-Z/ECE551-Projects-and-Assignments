@@ -118,7 +118,7 @@ void calcCumulative(unsigned * data, size_t n_days, uint64_t pop, double * cum) 
     exit(EXIT_FAILURE);
   }
   double density;
-  cum[0] = data[0] / (double)pop * 100000;
+  cum[0] = (double)data[0] / pop * 100000;
   for (size_t i = 1; i < n_days; i++) {
     if (cum[i - 1] > 100000) {
       fprintf(stderr, "Total case number larger than population.\n");
