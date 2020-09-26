@@ -37,13 +37,7 @@ void ReadandSort(FILE * f) {
 
 int main(int argc, char ** argv) {
   if (argc == 1) {
-    if (stdin == NULL) {
-      perror("Empty input file.\n");
-      return EXIT_FAILURE;
-    }
-    else {
-      ReadandSort(stdin);
-    }
+    ReadandSort(stdin);
   }
   else {
     //read from each input arg file argv[i]
