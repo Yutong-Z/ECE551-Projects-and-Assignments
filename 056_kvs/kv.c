@@ -13,22 +13,26 @@ kvpair_t parseKVline(char * line) {
   size_t i = 0;
   size_t j = 0;
   while (line[i] != '=' && line[i] != '\n' && line[i] != '\0') {
-    pair.key = realloc(pair.key, (j + 1) * (*pair.key));
+    pair.key = realloc(pair.key, (j + 1) * sizeof(*pair.value));
     pair.key[j] = line[i];
     i++;
     j++;
   }
-  pair.key = realloc(pair.key, (j + 1) * (*pair.key));
+  if (line[i] != '=') {
+    fprintf(stderr, "Line doesn't have '='\n");
+    exit(EXIT_FAILURE);
+  }
+  pair.key = realloc(pair.key, (j + 1) * sizeof(*pair.key));
   pair.key[j] = '\0';
   i++;  // form line[i]='=' to value area in line
   j = 0;
   while (line[i] != '\n' && line[i] != '\0') {
-    pair.value = realloc(pair.value, (j + 1) * (*pair.value));
+    pair.value = realloc(pair.value, (j + 1) * sizeof(*pair.value));
     pair.value[j] = line[i];
     i++;
     j++;
   }
-  pair.value = realloc(pair.value, (j + 1) * (*pair.value));
+  pair.value = realloc(pair.value, (j + 1) * sizeof(*pair.value));
   pair.value[j] = '\0';
   return pair;
 }
@@ -49,9 +53,12 @@ kvarray_t * readKVs(const char * fname) {
     pairs->kvlen++;
     pairs->kvarray = realloc(pairs->kvarray, pairs->kvlen * sizeof(*pairs->kvarray));
     pairs->kvarray[pairs->kvlen - 1] = parseKVline(line);
-    line = NULL;
   }
   free(line);
+  if (fclose(f) != 0) {
+    fprintf(stderr, "Can not close file %s.\n", fname);
+    exit(EXIT_FAILURE);
+  }
   return pairs;
 }
 
