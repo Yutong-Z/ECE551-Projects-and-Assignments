@@ -1,6 +1,6 @@
-Grading at 09/28/2020:02:15:08.296961
-For commit ID 1a8d4b4c1b442e0729e66a134608b35b9d21b041
-Grading at Sun Sep 27 22:15:03 EDT 2020
+Grading at 09/28/2020:02:55:58.824799
+For commit ID 8f3a7acb8108f45bb48f7aa83a083e065cc7912f
+Grading at Sun Sep 27 22:55:53 EDT 2020
 Attempting to compile:
 rm -f  outname.o  counts.o  main.o  kv.o count_values *~
 gcc -c -Wall -Werror -std=gnu99 -pedantic -ggdb3 outname.c
@@ -15,31 +15,30 @@ testcase1 passed, your program successfully indicated a failure
 valgrind was clean
 #################################################
 testcase2:
-Line_1_did_not_match
+Line_6_did_not_match
 Your file did not match the expected ouput
 Comparing file list1a.txt.counts with answer
 Your output is correct
 Comparing file list1b.txt.counts with answer
-Line_1_did_not_match
+Line_7_did_not_match
 Your file did not match the expected ouput
 Your output is incorrect
 #################################################
 testcase3:
-Line_1_did_not_match
-Your file did not match the expected ouput
+Your file matched the expected output
 Comparing file list2a.txt.counts with answer
 Your output is correct
 Comparing file list2b.txt.counts with answer
-Line_1_did_not_match
+Line_5_did_not_match
 Your file did not match the expected ouput
 Your output is incorrect
 Comparing file list2c.txt.counts with answer
-Line_1_did_not_match
+Line_5_did_not_match
 Your file did not match the expected ouput
 Your output is incorrect
 #################################################
 testcase4:
-Line_1_did_not_match
+Line_6_did_not_match
 Your file did not match the expected ouput
 Comparing file list3a.txt.counts with answer
 Your output is correct
