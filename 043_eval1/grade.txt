@@ -1,6 +1,6 @@
-Grading at 09/29/2020:20:20:30.102356
+Grading at 09/30/2020:18:52:30.830091
 For commit ID 5067721d0dac63032906315a50087ba4a1902156
-Grading at Tue Sep 29 16:20:12 EDT 2020
+Grading at Wed Sep 30 14:52:12 EDT 2020
 
 Checking that your code compiles
 rm -f *~ printCountries printRunningAvg printCumulative printDailyMax
