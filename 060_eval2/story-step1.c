@@ -57,13 +57,13 @@ char * getStoryLine(char * line) {
       j = 0;
       i++;
       // copy word into story
-      // story = realloc(story, (storyLen + strlen(word)) * sizeof(*story));
-      // story = strncpy(story + storyLen, word, strlen(word));
-      // storyLen = storyLen + strlen(word);
-      printf("%s: %s\n", cat, word);
-      story = realloc(story, (storyLen + 1) * sizeof(*story));
-      story[storyLen] = '?';
-      storyLen = storyLen + 1;
+      while (*word != '\0') {
+        story = realloc(story, (storyLen + 1) * sizeof(*story));
+        story[storyLen] = *word;
+        storyLen = storyLen + 1;
+        word++;
+      }
+      // printf("Parsed category %s: %s\n", cat, word);
     }
   }
   free(cat);
