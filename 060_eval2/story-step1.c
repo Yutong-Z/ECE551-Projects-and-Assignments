@@ -3,40 +3,16 @@
 #include <string.h>
 
 #include "provided.h"
+#include "rand_story.h"
 
-// paragraph struct
-struct para_tag {
-  char ** lines;
-  size_t lineNum;
-};
-typedef struct para_tag para_t;
-
-void freePara(para_t * Para) {
-  for (size_t i = 0; i < Para->lineNum; i++) {
-    free(Para->lines[i]);
-  }
-  free(Para->lines);
-  free(Para);
-}
-
-void printPara(para_t * Para) {
-  for (size_t i = 0; i < Para->lineNum; i++) {
-    printf("%s", Para->lines[i]);
-  }
-}
-
-char * getStoryLine(char * line) {
+void printStoryLine(char * line) {
   size_t i = 0;
-  size_t storyLen = 0;
-  char * story = NULL;
   int j = 0;
   size_t catLen = 0;
   char * cat = NULL;
   while (line[i] != '\0') {
     if (line[i] != '_' && j == 0) {  // out of blank
-      story = realloc(story, (storyLen + 1) * sizeof(*story));
-      story[storyLen] = line[i];
-      storyLen++;
+      printf("%c", line[i]);
       i++;
     }
     if (line[i] == '_' && j == 0) {  // new blank area
@@ -56,51 +32,25 @@ char * getStoryLine(char * line) {
       catLen = 0;
       j = 0;
       i++;
-      // copy word into story
-      while (*word != '\0') {
-        story = realloc(story, (storyLen + 1) * sizeof(*story));
-        story[storyLen] = *word;
-        storyLen = storyLen + 1;
-        word++;
-      }
-      // printf("Parsed category %s: %s\n", cat, word);
+      // print word into story
+      printf("%s", word);
     }
   }
   free(cat);
-  story = realloc(story, (storyLen + 1) * sizeof(*story));
-  story[storyLen] = '\0';
   if (j == 1) {  //no matching '_' with a pervious '_'
     fprintf(stderr, "Underscore not matcing in line %s", line);
     exit(EXIT_FAILURE);
   }
-  return story;
 }
 
-para_t * parseTemplate(FILE * f) {
-  char * curr = NULL;
+void parseTemplate(FILE * f) {
+  char * line = NULL;
   size_t linecap;
-  para_t * template = malloc(sizeof(*template));
-  template->lineNum = 0;
-  template->lines = NULL;
-  // parsing temlapte file, save lines into template struct
-  while (getline(&curr, &linecap, f) >= 0) {
-    template->lines =
-        realloc(template->lines, (template->lineNum + 1) * sizeof(*template->lines));
-    template->lines[template->lineNum] = curr;
-    curr = NULL;
-    template->lineNum++;
+  // parsing temlapte file, print lines with blank converted
+  while (getline(&line, &linecap, f) >= 0) {
+    printStoryLine(line);
   }
-  free(curr);
-  // calculate story struct with tamplate sstruct
-  para_t * story = malloc(sizeof(*story));
-  story->lineNum = template->lineNum;
-  story->lines = malloc(story->lineNum * sizeof(*story->lines));
-  for (size_t i = 0; i < template->lineNum; i++) {
-    // convert each original line into new allocated story line
-    story->lines[i] = getStoryLine(template->lines[i]);
-  }
-  freePara(template);
-  return story;
+  free(line);
 }
 
 int main(int argc, char ** argv) {
@@ -113,12 +63,7 @@ int main(int argc, char ** argv) {
     fprintf(stderr, "Can not open file %s\n", argv[1]);
     exit(EXIT_FAILURE);
   }
-  // parse template lines and convert to story lines
-  para_t * story = parseTemplate(f);
-  // print story lines
-  printPara(story);
-  // free story lines memory
-  freePara(story);
+  parseTemplate(f);
   if (fclose(f) != 0) {
     fprintf(stderr, "Can not close file %s\n", argv[1]);
     exit(EXIT_FAILURE);
