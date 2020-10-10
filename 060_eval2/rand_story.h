@@ -3,10 +3,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "provided.h"
 
 void printStoryLine(char * line);
 void parseTemplate(FILE * f);
+
+size_t contains(catarray_t * cats, char * catName);
+char * getWord(char * line);
+char * getCat(char * line);
+catarray_t * parseCategories(FILE * f);
+void freeCatArr(catarray_t * cats);
 
 #endif
