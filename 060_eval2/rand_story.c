@@ -4,7 +4,7 @@
 STEP1
 */
 
-void printStoryLine(char * line) {
+void printStoryLine(char * line, catarray_t * cats) {
   size_t i = 0;
   int j = 0;
   size_t catLen = 0;
@@ -27,7 +27,7 @@ void printStoryLine(char * line) {
     if (line[i] == '_' && j == 1) {  //end of blank
       cat = realloc(cat, (catLen + 1) * sizeof(*cat));
       cat[catLen] = '\0';
-      const char * word = chooseWord(cat, NULL);  // step1, get a pointer to "cat"
+      const char * word = chooseWord(cat, cats);  // step1, get a pointer to "cat"
       catLen = 0;
       j = 0;
       i++;
@@ -42,12 +42,12 @@ void printStoryLine(char * line) {
   }
 }
 
-void parseTemplate(FILE * f) {
+void parseTemplate(FILE * f, catarray_t * cats) {
   char * line = NULL;
   size_t linecap;
   // parsing temlapte file, print lines with blank converted
   while (getline(&line, &linecap, f) >= 0) {
-    printStoryLine(line);
+    printStoryLine(line, cats);
   }
   free(line);
 }

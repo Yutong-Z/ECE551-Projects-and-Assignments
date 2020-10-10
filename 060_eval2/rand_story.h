@@ -7,8 +7,8 @@
 
 #include "provided.h"
 
-void printStoryLine(char * line);
-void parseTemplate(FILE * f);
+void printStoryLine(char * line, catarray_t * cats);
+void parseTemplate(FILE * f, catarray_t * cats);
 
 size_t contains(catarray_t * cats, char * catName);
 char * getWord(char * line);

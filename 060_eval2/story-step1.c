@@ -13,7 +13,7 @@ int main(int argc, char ** argv) {
     fprintf(stderr, "Can not open file %s\n", argv[1]);
     exit(EXIT_FAILURE);
   }
-  parseTemplate(f);
+  parseTemplate(f, NULL);
   if (fclose(f) != 0) {
     fprintf(stderr, "Can not close file %s\n", argv[1]);
     exit(EXIT_FAILURE);
