@@ -89,7 +89,7 @@ void freeCatArr(catarray_t * cats) {
 // Takes one command line argument: name of file with the categories and words.
 // Reads file and stores the words into a catarray_t and print them.
 int main(int argc, char ** argv) {
-  if (argc < 2) {
+  if (argc != 2) {
     fprintf(stderr, "Useage: story_step2 wordFileName\n");
     exit(EXIT_FAILURE);
   }

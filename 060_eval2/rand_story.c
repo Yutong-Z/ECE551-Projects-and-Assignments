@@ -31,11 +31,11 @@ void printStoryLine(char * line) {
       printf("%s", word);
     }
   }
-  free(cat);
   if (j == 1) {  //no matching '_' with a pervious '_'
-    fprintf(stderr, "Underscore not matcing in line %s", line);
+    fprintf(stderr, "Underscore not matcing in line: %s", line);
     exit(EXIT_FAILURE);
   }
+  free(cat);
 }
 
 void parseTemplate(FILE * f) {
