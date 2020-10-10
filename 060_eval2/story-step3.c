@@ -19,6 +19,7 @@ int main(int argc, char ** argv) {
   }
   // parse categories lines and store them in cats
   catarray_t * cats = parseCategories(f1);
+  // printWords(cats);
   if (fclose(f1) != 0) {
     fprintf(stderr, "Can not close word file %s\n", argv[1]);
     exit(EXIT_FAILURE);
