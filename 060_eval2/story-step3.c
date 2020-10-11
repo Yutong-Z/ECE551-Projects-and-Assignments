@@ -9,7 +9,7 @@
 //   2. the name of the file for the story template
 int main(int argc, char ** argv) {
   if (argc != 3) {
-    fprintf(stderr, "Useage: story_step3 wordFileName templateFileName\n");
+    fprintf(stderr, "Useage: ./story_step3 wordFileName templateFileName\n");
     exit(EXIT_FAILURE);
   }
   FILE * f1 = fopen(argv[1], "r");
@@ -30,7 +30,7 @@ int main(int argc, char ** argv) {
     exit(EXIT_FAILURE);
   }
   // parse template ans print story with proper words
-  parseTemplate(f2, cats);
+  parseTemplate(f2, cats, 1);
   if (fclose(f2) != 0) {
     fprintf(stderr, "Can not close template file %s\n", argv[1]);
     exit(EXIT_FAILURE);

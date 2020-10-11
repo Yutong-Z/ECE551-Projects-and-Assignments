@@ -4,7 +4,7 @@
 STEP1
 */
 
-void printStoryLine(char * line, catarray_t * cats) {
+void printStoryLine(char * line, catarray_t * cats, int reuse) {
   size_t i = 0;
   int j = 0;
   size_t catLen = 0;
@@ -42,6 +42,13 @@ void printStoryLine(char * line, catarray_t * cats) {
       track->words = realloc(track->words, (track->n_words + 1) * sizeof(*track->words));
       track->words[track->n_words] = strdup(word);
       track->n_words++;
+      // reuse = 0, remove words if it's not from track
+      if (cat != NULL && reuse == 0) {
+        int num = atoi(cat);
+        if (!(num >= 1 && (unsigned int)num <= track->n_words)) {
+          removeWord(cats, cat, word);
+        }
+      }
     }
   }
   free(cat);
@@ -61,12 +68,12 @@ void freeCat(category_t * cat) {
   free(cat);
 }
 
-void parseTemplate(FILE * f, catarray_t * cats) {
+void parseTemplate(FILE * f, catarray_t * cats, int reuse) {
   char * line = NULL;
   size_t linecap;
   // parsing temlapte file, print lines with blank converted
   while (getline(&line, &linecap, f) >= 0) {
-    printStoryLine(line, cats);
+    printStoryLine(line, cats, reuse);
   }
   free(line);
 }
@@ -176,15 +183,18 @@ Inputs:
  */
 const char * fancyChooseWord(char * category, catarray_t * cats, category_t * track) {
   if (cats == NULL) {
-    return chooseWord(category, cats);
+    return chooseWord(category, NULL);
   }
   else {
     int num = atoi(category);  // atoi returns 0 if category can't be converted
-    //printf("%s, %d", category, contains(cats, category));
     if (num >= 1 && (unsigned int)num <= track->n_words) {
+      // category name is a valid integer of at least one
+      // and the integer less than number of previously used words
       return track->words[track->n_words - (unsigned int)num];
     }
-    else if (contains(cats, category) != -1) {  // cats contains category
+    else if (contains(cats, category) != -1 &&
+             cats->arr[contains(cats, category)].n_words != 0) {
+      // cats contains category && the category still has words (for option in step4)
       return chooseWord(category, cats);
     }
     else {
@@ -192,4 +202,40 @@ const char * fancyChooseWord(char * category, catarray_t * cats, category_t * tr
       exit(EXIT_FAILURE);
     }
   }
+}
+
+/*
+STEP4
+*/
+
+/*
+Remove a word from categories struct "cats"
+After removing the word, if the category it belongs to has no word, n_word is category will be 0
+Not removing the category without any words to avoid double free
+ */
+void removeWord(catarray_t * cats, char * category, const char * word) {
+  int catIdx = contains(cats, category);
+  size_t wordIdx;
+  for (size_t i = 0; i < cats->arr[catIdx].n_words; i++) {
+    if (strcmp(word, cats->arr[catIdx].words[i]) == 0) {
+      wordIdx = i;
+    }
+  }
+  free(cats->arr[catIdx].words[wordIdx]);
+  cats->arr[catIdx].n_words--;
+  size_t j = 0;
+  char ** temp = malloc(cats->arr[catIdx].n_words * sizeof(*temp));
+  for (size_t i = 0; i < (cats->arr[catIdx].n_words + 1); i++) {
+    if (i != wordIdx) {
+      temp[j] = cats->arr[catIdx].words[i];
+      j++;
+    }
+  }
+  free(cats->arr[catIdx].words);
+  cats->arr[catIdx].words =
+      malloc(cats->arr[catIdx].n_words * sizeof(*cats->arr[catIdx].words));
+  for (size_t i = 0; i < cats->arr[catIdx].n_words; i++) {
+    cats->arr[catIdx].words[i] = temp[i];
+  }
+  free(temp);
 }

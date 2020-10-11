@@ -8,7 +8,7 @@
 // Reads file and stores the words into a catarray_t and print them.
 int main(int argc, char ** argv) {
   if (argc != 2) {
-    fprintf(stderr, "Useage: story_step2 wordFileName\n");
+    fprintf(stderr, "Useage: ./story_step2 wordFileName\n");
     exit(EXIT_FAILURE);
   }
   FILE * f = fopen(argv[1], "r");
