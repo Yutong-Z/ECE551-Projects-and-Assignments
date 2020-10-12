@@ -7,7 +7,7 @@
 
 #include "provided.h"
 
-void printStoryLine(char * line, catarray_t * cats, int reuse);
+void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * track);
 void freeCat(category_t * cat);
 void parseTemplate(FILE * f, catarray_t * cats, int reuse);
 

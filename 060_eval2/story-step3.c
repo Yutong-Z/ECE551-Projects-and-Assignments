@@ -26,13 +26,13 @@ int main(int argc, char ** argv) {
   }
   FILE * f2 = fopen(argv[2], "r");
   if (f2 == NULL) {
-    fprintf(stderr, "Can not open template file %s\n", argv[1]);
+    fprintf(stderr, "Can not open template file %s\n", argv[2]);
     exit(EXIT_FAILURE);
   }
   // parse template ans print story with proper words
   parseTemplate(f2, cats, 1);
   if (fclose(f2) != 0) {
-    fprintf(stderr, "Can not close template file %s\n", argv[1]);
+    fprintf(stderr, "Can not close template file %s\n", argv[2]);
     exit(EXIT_FAILURE);
   }
   freeCatArr(cats);

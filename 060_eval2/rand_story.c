@@ -4,15 +4,11 @@
 STEP1
 */
 
-void printStoryLine(char * line, catarray_t * cats, int reuse) {
+void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * track) {
   size_t i = 0;
   int j = 0;
   size_t catLen = 0;
   char * cat = NULL;
-  category_t * track = malloc(sizeof(*track));
-  track->n_words = 0;
-  track->words = NULL;
-  track->name = strdup("used");
   while (line[i] != '\0') {
     if (line[i] != '_' && j == 0) {  // out of blank
       printf("%c", line[i]);
@@ -52,7 +48,6 @@ void printStoryLine(char * line, catarray_t * cats, int reuse) {
     }
   }
   free(cat);
-  freeCat(track);
   if (j == 1) {  //no matching '_' with a pervious '_'
     fprintf(stderr, "Underscore not matcing in line: %s", line);
     exit(EXIT_FAILURE);
@@ -71,11 +66,16 @@ void freeCat(category_t * cat) {
 void parseTemplate(FILE * f, catarray_t * cats, int reuse) {
   char * line = NULL;
   size_t linecap;
+  category_t * track = malloc(sizeof(*track));
+  track->n_words = 0;
+  track->words = NULL;
+  track->name = strdup("used");
   // parsing temlapte file, print lines with blank converted
   while (getline(&line, &linecap, f) >= 0) {
-    printStoryLine(line, cats, reuse);
+    printStoryLine(line, cats, reuse, track);
   }
   free(line);
+  freeCat(track);
 }
 
 /*
