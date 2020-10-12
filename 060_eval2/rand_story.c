@@ -4,9 +4,17 @@
 STEP1
 */
 
+/*
+The function that converts category to word and prints story with single line from template.
+Inputs:
+  char * line: Pointer to line get with getline form template file
+  catarray * cats: categories to choose words from
+  int reuse: 0 if we cannot choose the same word from categories when encounter same _category_ in template
+  category_t * track: pointer to category struct that stores used words sequence
+ */
 void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * track) {
   size_t i = 0;
-  int j = 0;
+  int j = 0;  // indicater to see if parsing characters out of blank area
   size_t catLen = 0;
   char * cat = NULL;
   while (line[i] != '\0') {
@@ -18,17 +26,17 @@ void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * trac
       i++;
       j = 1;
     }
-    if (line[i] != '_' && j == 1) {  //in blank
+    if (line[i] != '_' && j == 1) {  // in blank
+      // store the category name into cat
       cat = realloc(cat, (catLen + 1) * sizeof(*cat));
       cat[catLen] = line[i];
       catLen++;
       i++;
     }
-    if (line[i] == '_' && j == 1) {  //end of blank
+    if (line[i] == '_' && j == 1) {  // end of blank
       cat = realloc(cat, (catLen + 1) * sizeof(*cat));
       cat[catLen] = '\0';
-      const char * word =
-          fancyChooseWord(cat, cats, track);  // step1, get a pointer to "cat"
+      const char * word = fancyChooseWord(cat, cats, track);
       catLen = 0;
       j = 0;
       i++;
@@ -55,6 +63,9 @@ void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * trac
   }
 }
 
+/*
+Function to free dynamically allocated memory for category_t * data
+ */
 void freeCat(category_t * cat) {
   for (size_t i = 0; i < cat->n_words; i++) {
     free(cat->words[i]);
@@ -64,6 +75,13 @@ void freeCat(category_t * cat) {
   free(cat);
 }
 
+/*
+Function to parse whole template file and print the converted story.
+Inputs:
+  FILE * f: the stream for template file
+  catarray_t * cats: categories to choose word from
+  int reuse: 0 if we cannot choose the same word from categories when encounter same _category_ in template
+ */
 void parseTemplate(FILE * f, catarray_t * cats, int reuse) {
   char * line = NULL;
   size_t linecap;
@@ -71,7 +89,7 @@ void parseTemplate(FILE * f, catarray_t * cats, int reuse) {
   track->n_words = 0;
   track->words = NULL;
   track->name = strdup("used");
-  // parsing temlapte file, print lines with blank converted
+  // parse temlapte file, print each lines with blank converted
   while (getline(&line, &linecap, f) >= 0) {
     printStoryLine(line, cats, reuse, track);
   }
@@ -84,9 +102,18 @@ STEP2
 */
 
 /* Cite function below: AoP page 269 */
-int contains(catarray_t * cats, char * catName) {
+/*
+Function to check if a categoies array contains a specific category.
+Returns:
+  -1, if the categories array "cats" does not contain the category "cat"
+  the index of the category "cat" in catrgories array, if "cats" contains the category "cat"
+Inputs:
+  catarray * cats: pointer to the categoies array
+  cahr * cat: name of the specific category
+ */
+int contains(catarray_t * cats, char * cat) {
   for (size_t i = 0; i < cats->n; i++) {
-    if (!strcmp(cats->arr[i].name, catName)) {
+    if (!strcmp(cats->arr[i].name, cat)) {
       return i;  // cats contains this cat name, return name index
     }
   }
