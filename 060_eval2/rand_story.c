@@ -40,8 +40,9 @@ void printStoryLine(char * line, catarray_t * cats, int reuse, category_t * trac
       track->n_words++;
       // reuse = 0, remove words if it's not from track
       if (cat != NULL && reuse == 0) {
-        int num = atoi(cat);
-        if (!(num >= 1 && (unsigned int)num <= track->n_words)) {
+        if (atoi(cat) < 1 && contains(cats, cat) != -1 &&
+            cats->arr[contains(cats, cat)].n_words !=
+                0) {  // determine if word is not chose from track
           removeWord(cats, cat, word);
         }
       }
@@ -192,6 +193,11 @@ const char * fancyChooseWord(char * category, catarray_t * cats, category_t * tr
       // and the integer less than number of previously used words
       return track->words[track->n_words - (unsigned int)num];
     }
+    else if (num >= 1 && (unsigned int)num <= track->n_words) {
+      // integer is larger than number of previously used words
+      fprintf(stderr, "Integer category _%d_ larger than previously used words!", num);
+      exit(EXIT_FAILURE);
+    }
     else if (contains(cats, category) != -1 &&
              cats->arr[contains(cats, category)].n_words != 0) {
       // cats contains category && the category still has words (for option in step4)
@@ -211,7 +217,7 @@ STEP4
 /*
 Remove a word from categories struct "cats"
 After removing the word, if the category it belongs to has no word, n_word is category will be 0
-Not removing the category without any words to avoid double free
+Not removing the category without any words to avoid double free happen
  */
 void removeWord(catarray_t * cats, char * category, const char * word) {
   int catIdx = contains(cats, category);
