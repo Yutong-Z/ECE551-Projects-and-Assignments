@@ -193,9 +193,9 @@ const char * fancyChooseWord(char * category, catarray_t * cats, category_t * tr
       // and the integer less than number of previously used words
       return track->words[track->n_words - (unsigned int)num];
     }
-    else if (num >= 1 && (unsigned int)num <= track->n_words) {
+    else if (num >= 1 && (unsigned int)num > track->n_words) {
       // integer is larger than number of previously used words
-      fprintf(stderr, "Integer category _%d_ larger than previously used words!", num);
+      fprintf(stderr, "Integer category _%d_ larger than previously used words!\n", num);
       exit(EXIT_FAILURE);
     }
     else if (contains(cats, category) != -1 &&
