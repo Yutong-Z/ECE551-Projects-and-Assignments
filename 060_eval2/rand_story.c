@@ -120,6 +120,13 @@ int contains(catarray_t * cats, char * cat) {
   return -1;  // cats does not contain this cat name
 }
 
+/*
+Function to get word (string after the first ":") in a line form words.txt file.
+Return:
+  The substring after first ":" in line, with newline character stripped
+Input:
+  char * line: a line from words.txt file
+ */
 char * getWord(char * line) {
   char * newLine = strchr(line, '\n');
   *newLine = '\0';  // strip newline character
@@ -133,8 +140,16 @@ char * getWord(char * line) {
   return word;
 }
 
-// getCat strip first ':' and characters after ':'
-// So, it must be used after getting word with getWord
+/*
+Function to get category name (string before the first ":") in a line form words.txt file.
+Return:
+  The substring before first ":" in line
+Input:
+  char * line: a line from words.txt file
+
+Note: function getCat() strip first ':' and characters after ':'
+So, it must be used after getting word with getWord
+*/
 char * getCat(char * line) {
   char * ptr = strchr(line, ':');
   if (ptr == NULL) {
@@ -146,6 +161,13 @@ char * getCat(char * line) {
   return cat;
 }
 
+/*
+Function to parse categories file with each line of the input file must have a colon (':').
+Returns:
+  a pointer to categoies array thst contains all categories and words parsed
+Input:
+  The stream for reading of the categories file
+ */
 catarray_t * parseCategories(FILE * f) {
   char * line = NULL;
   size_t linecap;
@@ -180,6 +202,9 @@ catarray_t * parseCategories(FILE * f) {
   return cats;
 }
 
+/*
+Function to free the memory related to input pointer to catearray_t
+ */
 void freeCatArr(catarray_t * cats) {
   for (size_t i = 0; i < cats->n; i++) {
     for (size_t j = 0; j < cats->arr[i].n_words; j++) {
@@ -244,18 +269,26 @@ STEP4
 /*
 Remove a word from categories struct "cats"
 After removing the word, if the category it belongs to has no word, n_word is category will be 0
-Not removing the category without any words to avoid double free happen
+Not removing the category with 0 words to avoid double free happen
+Inputs:
+  catarray_t * cats: struct object that remove word from
+  char * category: the name of category the word we want to remove belongs to
+  const char * word: the word we want to remove
  */
 void removeWord(catarray_t * cats, char * category, const char * word) {
+  // find the index of category that word belongs to
   int catIdx = contains(cats, category);
+  // find the index of word
   size_t wordIdx;
   for (size_t i = 0; i < cats->arr[catIdx].n_words; i++) {
     if (strcmp(word, cats->arr[catIdx].words[i]) == 0) {
       wordIdx = i;
     }
   }
+  // remove word and decrease n_words by 1
   free(cats->arr[catIdx].words[wordIdx]);
   cats->arr[catIdx].n_words--;
+  // re-allocate the remaining words in memory to make them consecutive
   size_t j = 0;
   char ** temp = malloc(cats->arr[catIdx].n_words * sizeof(*temp));
   for (size_t i = 0; i < (cats->arr[catIdx].n_words + 1); i++) {
