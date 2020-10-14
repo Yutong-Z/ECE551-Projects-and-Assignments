@@ -1,3 +1,2 @@
-Wangcai the _animal_ wants to eat _food_ today.
-_food_ is made with _abcda
-This is one more line with _food_.
+Wangcai the _animal_ wants to eat _animal_ today.
+_1_ is made with _animal_.

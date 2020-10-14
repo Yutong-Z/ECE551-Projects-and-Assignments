@@ -256,7 +256,7 @@ const char * fancyChooseWord(char * category, catarray_t * cats, category_t * tr
       return chooseWord(category, cats);
     }
     else {
-      fprintf(stderr, "catarray doesn't contain category %s\n", category);
+      fprintf(stderr, "catarray doesn't contain enough words in category %s\n", category);
       exit(EXIT_FAILURE);
     }
   }
