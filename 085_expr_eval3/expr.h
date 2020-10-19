@@ -16,7 +16,7 @@ class NumExpression : public Expression {
   long num;
 
  public:
-  NumExpression(long n) : num(n) {}
+  explicit NumExpression(long n) : num(n) {}
   virtual std::string toString() const {
     std::stringstream ss;
     ss << num;
