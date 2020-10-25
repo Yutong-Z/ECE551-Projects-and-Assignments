@@ -1,0 +1,79 @@
+Grading at 10/25/2020:22:48:06.538803
+For commit ID 85c19f37cb6716fc563ad0bfdaa90ecd07dde340
+Grading at Sun Oct 25 18:47:48 EDT 2020
+**Testing correct implementation **
+-----------------------------------
+  - Valgrind was clean (no errors, no memory leaks)
+
+**Testing broken implementation 10**
+-----------------------------------
+
+**Testing broken implementation 11**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 12**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 13**
+-----------------------------------
+
+**Testing broken implementation 14**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 15**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 16**
+-----------------------------------
+
+**Testing broken implementation 17**
+-----------------------------------
+
+**Testing broken implementation 18**
+-----------------------------------
+
+**Testing broken implementation 19**
+-----------------------------------
+
+**Testing broken implementation 1**
+-----------------------------------
+
+**Testing broken implementation 20**
+-----------------------------------
+
+**Testing broken implementation 21**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 2**
+-----------------------------------
+
+**Testing broken implementation 3**
+-----------------------------------
+
+**Testing broken implementation 4**
+-----------------------------------
+
+**Testing broken implementation 5**
+-----------------------------------
+
+**Testing broken implementation 6**
+-----------------------------------
+  - Valgrind reported errors
+
+**Testing broken implementation 7**
+-----------------------------------
+
+**Testing broken implementation 8**
+-----------------------------------
+
+**Testing broken implementation 9**
+-----------------------------------
+
+Your tests identified the problems with all broken programs
+
+Overall Grade: PASSED
