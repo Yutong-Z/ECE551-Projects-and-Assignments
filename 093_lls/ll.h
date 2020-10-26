@@ -125,6 +125,7 @@ class LinkedList {
       tail = curr;
       size = rhs.size;
     }
+    return *this;
   }
 
   ~LinkedList() {
