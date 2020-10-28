@@ -66,6 +66,8 @@ int main(void) {
   check(f1, 0, 150000, 52359, mesg);
   // check(f1, 52360, 150000, 52360, mesg);  // f(x) is all positive
   // check(f1, 0, 52350, 52350, mesg);       // f(x) is all negative
+  check(f1, 0, 52359, 52358, mesg);
+  check(f1, 52359, 150000, 52359, mesg);
   delete f1;
 
   Function<int, int> * f2 = new LogFunction;
