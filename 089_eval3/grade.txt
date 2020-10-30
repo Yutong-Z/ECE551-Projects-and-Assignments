@@ -1,0 +1,40 @@
+Grading at 10/30/2020:02:06:38.784879
+For commit ID 1625d962e845784a19cce9d53593556c9aa15fbd
+Grading at Thu Oct 29 22:06:38 EDT 2020
+Doing some basic sanity checking for your submission
+
+Step 1
+Checking that cyoa-step1 compiles
+rm -f *.o  *~ matrixTest
+make: 'cyoa-step1' is up to date.
+Testing ./cyoa-step1 story1/page1.txt 
+Your file matched the expected output
+Testing ./cyoa-step1 story1/page8.txt 
+Your file matched the expected output
+Testing ./cyoa-step1 story1/page11.txt 
+Your file matched the expected output
+
+Step 2
+Checking that cyoa-step2 compiles
+rm -f *.o  *~ matrixTest
+The code did not compile!
+
+Step 3
+Checking that cyoa-step3 compiles
+rm -f *.o  *~ matrixTest
+The code did not compile!
+
+Step 4
+Checking that cyoa-step4 compiles
+rm -f *.o  *~ matrixTest
+The code did not compile!
+
+Step 1: PASSED
+Step 2: FAILED
+Step 3: FAILED
+Step 4: FAILED
+
+You have NOT passed the pregrader's test cases.
+You should go back and debug the indicated step(s).
+
+Overall Grade: NO GRADE YET
