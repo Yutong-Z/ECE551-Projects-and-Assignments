@@ -9,65 +9,100 @@
 /*
 class represents a choice to go to another page
 Fields:
-  seqNum: The sequence number of choice.
   pageNum: A string literal represents number of page to go.
   text: The description of choice.
  */
-class choice {
+class Choice {
  private:
-  unsigned int
-      seqNum;  //*** Delete if not necessary // larger than 0, but no upper bound limit
   const std::string pageNum;
   const std::string text;
 
  public:
-  choice(unsigned int n, const std::string & p, const std::string & t) :
-      seqNum(n),
-      pageNum(p),
-      text(t){};
-  void printChoice() { std::cout << seqNum << ". " << text << "\n"; }
+  Choice(const std::string & p, const std::string & t) : pageNum(p), text(t){};
+  void printChoice() { std::cout << ". " << text << "\n"; }
 };
 
-class page {
+class Page {
  public:
-  unsigned int currPageNum;
+  std::string currPageNum;
   std::vector<std::string> * lines;
 
  public:
-  page(unsigned int n) : currPageNum(n), lines(new std::vector<std::string>()) {}
-  virtual ~page() { delete lines; }
+  Page(std::string & n) : currPageNum(n), lines(new std::vector<std::string>()) {}
+  virtual ~Page() { delete lines; }
   virtual void printPage() = 0;
+  virtual void parseNavLine(std::string & line) = 0;
   void printLines() {
     std::vector<std::string>::iterator it = lines->begin();
     while (it != lines->end()) {
-      std::cout << *it;
+      std::cout << *it << "\n";
       ++it;
     }
   }
-  // TO DO!!! add line
+  void addLine(std::string & line) { lines->push_back(line); }
 };
 
-class midPage : public page {
+class midPage : public Page {
  private:
-  std::vector<choice> * nav;
+  std::vector<Choice> * nav;
 
  public:
-  midPage(unsigned int n) : page(n), nav(new std::vector<choice>()){};
+  midPage(std::string & n) : Page(n), nav(new std::vector<Choice>()){};
   virtual ~midPage() { delete nav; }
-  virtual void printPage(){
-      // TO DO !!!
-  };
+  virtual void printPage() {
+    printLines();
+    std::cout << "\n"
+              << "What would you like to do?\n\n";
+    std::vector<Choice>::iterator it = nav->begin();
+    unsigned int i = 1;
+    while (it != nav->end()) {
+      std::cout << i;
+      it->printChoice();
+      ++it;
+      i++;
+    }
+  }
+  virtual void parseNavLine(std::string & line) {
+    size_t colonIdx = line.find(':');
+    if (colonIdx == std::string::npos) {
+      std::cerr << "No ':' found in this choice navigation line below:\n"
+                << line << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    // DO I NEED TO CHECK THIS NUM??
+    std::string pageNum = line.substr(0, colonIdx);
+    if (pageNum[0] == '-') {
+      std::cerr << "Negative page number in choice: " << pageNum << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    std::string text = line.substr(colonIdx + 1);
+    nav->push_back(Choice(pageNum, text));
+  }
 };
 
-class endPage : public page {
+class endPage : public Page {
  private:
   bool ifWin;
 
  public:
-  endPage(unsigned int n, bool b) : page(n), ifWin(b){};
+  endPage(std::string & n, bool b) : Page(n), ifWin(b){};
   virtual ~endPage() {}
   virtual void printPage() {
-    // TO DO!!
+    printLines();
+    std::cout << "\n";
+    printStatus();
+  }
+  virtual void parseNavLine(std::string & line) {
+    if (line.compare("WIN") == 0) {
+      ifWin = 1;
+    }
+    else if (line.compare("LOSE") == 0) {
+      ifWin = 0;
+    }
+    else {
+      std::cerr << "Input line of parseStatus is not WIN\n or LOSE\n" << std::endl;
+      exit(EXIT_FAILURE);
+    }
   }
   void printStatus() {
     if (ifWin == 1) {
