@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <fstream>
-#include <sstream>
 
 #include "cyoa.h"
 

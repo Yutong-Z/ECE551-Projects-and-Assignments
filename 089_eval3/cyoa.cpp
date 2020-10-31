@@ -4,6 +4,68 @@
 Step1
  */
 
+void Page::printLines() {
+  std::vector<std::string>::iterator it = lines->begin();
+  while (it != lines->end()) {
+    std::cout << *it << "\n";
+    ++it;
+  }
+}
+
+void midPage::printPage() {
+  printLines();
+  std::cout << "\n"
+            << "What would you like to do?\n\n";
+  std::vector<Choice>::iterator it = nav->begin();
+  unsigned int i = 1;
+  while (it != nav->end()) {
+    std::cout << i;
+    it->printChoice();
+    ++it;
+    i++;
+  }
+}
+void midPage::parseNavLine(std::string & line) {
+  size_t colonIdx = line.find(':');
+  if (colonIdx == std::string::npos) {
+    std::cerr << "No ':' found in this choice navigation line below:\n"
+              << line << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  std::string pageNumStr = line.substr(0, colonIdx);
+  unsigned int pageNum = getPageNum(pageNumStr);
+  if (pageNum == 0) {
+    std::cerr << "Invaild page number " << pageNumStr << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  std::string text = line.substr(colonIdx + 1);
+  nav->push_back(Choice(pageNum, text));
+}
+
+void endPage::printPage() {
+  printLines();
+  std::cout << "\n";
+  if (ifWin == 1) {
+    std::cout << "Congratulations! You have won. Hooray!" << std::endl;
+  }
+  else {
+    std::cout << "Sorry, you have lost. Better luck next time!" << std::endl;
+  }
+}
+
+void endPage::parseNavLine(std::string & line) {
+  if (line.compare("WIN") == 0) {
+    ifWin = 1;
+  }
+  else if (line.compare("LOSE") == 0) {
+    ifWin = 0;
+  }
+  else {
+    std::cerr << "Input line of parseStatus is not WIN\n or LOSE\n" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
 /*
 Convert a string pageNumStr to an unsigned int page numer.
 Input:
@@ -52,7 +114,7 @@ Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
     }
   }
   if (line[0] != '#') {
-    std::cerr << "Cannot find line begins with '#' !" << std::endl;
+    std::cerr << "Cannot find line begins with '#' after navigation part!" << std::endl;
     exit(EXIT_FAILURE);
   }
   while (getline(f, line)) {
@@ -60,3 +122,7 @@ Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
   }
   return currPage;
 }
+
+/*
+Step2
+ */

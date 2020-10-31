@@ -12,10 +12,9 @@
 /*
 class represents a choice to go to another page
 Fields:
-  pageNum: A string literal represents number of page to go.
+  pageNum: An unsigned int represents number of page to go.
   text: The description of choice.
  */
-
 class Choice {
  private:
   const unsigned int pageNum;
@@ -37,17 +36,10 @@ class Page {
   virtual ~Page() { delete lines; }
   virtual void printPage() = 0;
   virtual void parseNavLine(std::string & line) = 0;
-  void printLines() {
-    std::vector<std::string>::iterator it = lines->begin();
-    while (it != lines->end()) {
-      std::cout << *it << "\n";
-      ++it;
-    }
-  }
+  virtual bool checkEnd() = 0;
+  void printLines();
   void addLine(std::string & line) { lines->push_back(line); }
 };
-
-unsigned int getPageNum(std::string & pageNumStr);
 
 class midPage : public Page {
  private:
@@ -56,35 +48,9 @@ class midPage : public Page {
  public:
   midPage(const unsigned int n) : Page(n), nav(new std::vector<Choice>()){};
   virtual ~midPage() { delete nav; }
-  virtual void printPage() {
-    printLines();
-    std::cout << "\n"
-              << "What would you like to do?\n\n";
-    std::vector<Choice>::iterator it = nav->begin();
-    unsigned int i = 1;
-    while (it != nav->end()) {
-      std::cout << i;
-      it->printChoice();
-      ++it;
-      i++;
-    }
-  }
-  virtual void parseNavLine(std::string & line) {
-    size_t colonIdx = line.find(':');
-    if (colonIdx == std::string::npos) {
-      std::cerr << "No ':' found in this choice navigation line below:\n"
-                << line << std::endl;
-      exit(EXIT_FAILURE);
-    }
-    std::string pageNumStr = line.substr(0, colonIdx);
-    unsigned int pageNum = getPageNum(pageNumStr);
-    if (pageNum == 0) {
-      std::cerr << "Invaild page number " << pageNumStr << std::endl;
-      exit(EXIT_FAILURE);
-    }
-    std::string text = line.substr(colonIdx + 1);
-    nav->push_back(Choice(pageNum, text));
-  }
+  virtual void printPage();
+  virtual void parseNavLine(std::string & line);
+  virtual bool checkEnd() { return 0; }
 };
 
 class endPage : public Page {
@@ -94,31 +60,9 @@ class endPage : public Page {
  public:
   endPage(const unsigned int n, bool b) : Page(n), ifWin(b){};
   virtual ~endPage() {}
-  virtual void printPage() {
-    printLines();
-    std::cout << "\n";
-    printStatus();
-  }
-  virtual void parseNavLine(std::string & line) {
-    if (line.compare("WIN") == 0) {
-      ifWin = 1;
-    }
-    else if (line.compare("LOSE") == 0) {
-      ifWin = 0;
-    }
-    else {
-      std::cerr << "Input line of parseStatus is not WIN\n or LOSE\n" << std::endl;
-      exit(EXIT_FAILURE);
-    }
-  }
-  void printStatus() {
-    if (ifWin == 1) {
-      std::cout << "Congratulations! You have won. Hooray!" << std::endl;
-    }
-    else {
-      std::cout << "Sorry, you have lost. Better luck next time!" << std::endl;
-    }
-  }
+  virtual void printPage();
+  virtual void parseNavLine(std::string & line);
+  virtual bool checkEnd() { return 1; }
 };
 
 /* Functions */
