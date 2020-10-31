@@ -1,12 +1,14 @@
-Grading at 10/30/2020:02:06:38.784879
-For commit ID 1625d962e845784a19cce9d53593556c9aa15fbd
-Grading at Thu Oct 29 22:06:38 EDT 2020
+Grading at 10/31/2020:03:19:21.173707
+For commit ID 0066f75e39116659baeb6192c07a3cf8bf483a13
+Grading at Fri Oct 30 23:19:20 EDT 2020
 Doing some basic sanity checking for your submission
 
 Step 1
 Checking that cyoa-step1 compiles
 rm -f *.o  *~ matrixTest
-make: 'cyoa-step1' is up to date.
+g++ -c -Wall -Werror -std=gnu++98 -pedantic -ggdb3 cyoa-step1.cpp
+g++ -c -Wall -Werror -std=gnu++98 -pedantic -ggdb3 cyoa.cpp
+g++ -o cyoa-step1 cyoa-step1.o cyoa.o
 Testing ./cyoa-step1 story1/page1.txt 
 Your file matched the expected output
 Testing ./cyoa-step1 story1/page8.txt 
