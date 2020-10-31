@@ -16,10 +16,7 @@ int main(int argc, char ** argv) {
     return EXIT_FAILURE;
   }
   // parse page
-  std::stringstream ss;
-  ss << 0;
-  std::string currPageNum = ss.str();
-  Page * currPage = parsePage(f, currPageNum);
+  Page * currPage = parsePage(f, 0);
   // print page
   currPage->printPage();
   // free page

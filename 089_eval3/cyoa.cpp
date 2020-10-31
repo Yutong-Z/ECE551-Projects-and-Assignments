@@ -7,12 +7,12 @@ Step1
 /*
 Convert a string pageNumStr to an unsigned int page numer.
 Input:
-  std::string pageNumStr: A string parsed from the page file, navigation part, the substring before ':' in choice line.
+  std::string & pageNumStr: A reference to string parsed from the page file, navigation part, the substring before ':' in choice line.
 Returns:
   0: If the input string represents negative number or contains not digital char.
   unsigned int pageNum: If the input string could be converted to vaild page number.
  */
-unsigned int getPageNum(std::string pageNumStr) {
+unsigned int getPageNum(std::string & pageNumStr) {
   unsigned int pageNum;
   std::stringstream ss1(pageNumStr);
   ss1 >> pageNum;
@@ -27,7 +27,7 @@ unsigned int getPageNum(std::string pageNumStr) {
   }
 }
 
-Page * parsePage(std::ifstream & f, std::string & pageNum) {
+Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
   Page * currPage;
   std::string line;
   if (!getline(f, line)) {  // check if first line empty

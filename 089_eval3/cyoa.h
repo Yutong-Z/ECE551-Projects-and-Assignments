@@ -18,21 +18,22 @@ Fields:
 
 class Choice {
  private:
-  const std::string pageNum;
+  const unsigned int pageNum;
   const std::string text;
 
  public:
-  Choice(const std::string & p, const std::string & t) : pageNum(p), text(t){};
+  Choice(const unsigned int p, const std::string & t) : pageNum(p), text(t){};
   void printChoice() { std::cout << ". " << text << "\n"; }
+  unsigned int getChoicePage() { return pageNum; }
 };
 
 class Page {
  public:
-  std::string currPageNum;
+  const unsigned int currPageNum;
   std::vector<std::string> * lines;
 
  public:
-  Page(std::string & n) : currPageNum(n), lines(new std::vector<std::string>()) {}
+  Page(const unsigned int n) : currPageNum(n), lines(new std::vector<std::string>()) {}
   virtual ~Page() { delete lines; }
   virtual void printPage() = 0;
   virtual void parseNavLine(std::string & line) = 0;
@@ -46,12 +47,14 @@ class Page {
   void addLine(std::string & line) { lines->push_back(line); }
 };
 
+unsigned int getPageNum(std::string & pageNumStr);
+
 class midPage : public Page {
  private:
   std::vector<Choice> * nav;
 
  public:
-  midPage(std::string & n) : Page(n), nav(new std::vector<Choice>()){};
+  midPage(const unsigned int n) : Page(n), nav(new std::vector<Choice>()){};
   virtual ~midPage() { delete nav; }
   virtual void printPage() {
     printLines();
@@ -73,10 +76,10 @@ class midPage : public Page {
                 << line << std::endl;
       exit(EXIT_FAILURE);
     }
-    // DO I NEED TO CHECK THIS NUM??
-    std::string pageNum = line.substr(0, colonIdx);
-    if (pageNum[0] == '-') {
-      std::cerr << "Negative page number in choice: " << pageNum << std::endl;
+    std::string pageNumStr = line.substr(0, colonIdx);
+    unsigned int pageNum = getPageNum(pageNumStr);
+    if (pageNum == 0) {
+      std::cerr << "Invaild page number " << pageNumStr << std::endl;
       exit(EXIT_FAILURE);
     }
     std::string text = line.substr(colonIdx + 1);
@@ -89,7 +92,7 @@ class endPage : public Page {
   bool ifWin;
 
  public:
-  endPage(std::string & n, bool b) : Page(n), ifWin(b){};
+  endPage(const unsigned int n, bool b) : Page(n), ifWin(b){};
   virtual ~endPage() {}
   virtual void printPage() {
     printLines();
@@ -119,7 +122,7 @@ class endPage : public Page {
 };
 
 /* Functions */
-Page * parsePage(std::ifstream & f, std::string & pageNum);
-unsigned int getPageNum(std::string pageNumStr);
+Page * parsePage(std::ifstream & f, const unsigned int pageNum);
+unsigned int getPageNum(std::string & pageNumStr);
 
 #endif
