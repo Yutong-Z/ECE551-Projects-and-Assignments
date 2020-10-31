@@ -1,8 +1,11 @@
 #ifndef __CYOA_H_
 #define __CYOA_H_
 
+#include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -12,6 +15,7 @@ Fields:
   pageNum: A string literal represents number of page to go.
   text: The description of choice.
  */
+
 class Choice {
  private:
   const std::string pageNum;
@@ -113,4 +117,9 @@ class endPage : public Page {
     }
   }
 };
+
+/* Functions */
+Page * parsePage(std::ifstream & f, std::string & pageNum);
+unsigned int getPageNum(std::string pageNumStr);
+
 #endif

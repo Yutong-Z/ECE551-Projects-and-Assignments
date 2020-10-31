@@ -1,0 +1,44 @@
+#include "cyoa.h"
+
+/*
+Step1
+ */
+
+unsigned int getPageNum(std::string pageNumStr) {
+  unsigned int n;
+  std::stringstream ss1;
+}
+
+Page * parsePage(std::ifstream & f, std::string & pageNum) {
+  Page * currPage;
+  std::string line;
+  if (!getline(f, line)) {  // check if first line empty
+    std::cerr << "Empty Page!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  // first line is WIN or LOSE status line
+  if (line.compare("WIN") == 0 || line.compare("LOSE") == 0) {
+    currPage = new endPage(pageNum, 0);
+    currPage->parseNavLine(line);
+    getline(f, line);  // get the line starts with #
+  }
+  // first line is choice line
+  else {
+    currPage = new midPage(pageNum);
+    currPage->parseNavLine(line);
+    while (getline(f, line)) {
+      if (line[0] == '#') {
+        break;  // Do nothing with the first line starts with '#'
+      }
+      currPage->parseNavLine(line);
+    }
+  }
+  if (line[0] != '#') {
+    std::cerr << "Cannot find line begins with '#' !" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  while (getline(f, line)) {
+    currPage->addLine(line);
+  }
+  return currPage;
+}
