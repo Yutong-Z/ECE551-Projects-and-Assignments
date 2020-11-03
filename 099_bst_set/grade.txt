@@ -1,38 +1,26 @@
-Grading at 11/03/2020:16:41:24.647381
-For commit ID 50bb3d5976ce0705476b81735f69d6309d71c211
-Grading at Tue Nov  3 11:41:24 EST 2020
+Grading at 11/03/2020:16:44:47.841364
+For commit ID 88705f28c906c8e3b32771b3b1074351e26e80c6
+Grading at Tue Nov  3 11:44:44 EST 2020
 -----------------------------------------------
 testcase 1 : Testing with BstSet<int>
 ...compiling...
-In file included from 90-tester.cpp:1:0:
-bstset.h: In instantiation of ‘BstSet<T>::Node* BstSet<T>::clone(BstSet<T>::Node*) [with T = int]’:
-bstset.h:43:44:   required from ‘BstSet<T>::BstSet(const BstSet<T>&) [with T = int]’
-90-tester.cpp:92:36:   required from here
-bstset.h:21:12: error: cannot convert ‘BstSet<int>::Node’ to ‘BstSet<int>::Node*’ in initialization
-     Node * newNode = Node(curr->key);
-            ^~~~~~~
-The code did not compile.  This test failed.
+The code compiled.
+  - Valgrind was clean (no errors, no memory leaks)
+Your file matched the expected output
+Testcase passed 
 -----------------------------------------------
 testcase 2 : Testing with BstSet<std::string>
 ...compiling...
-In file included from 90-tester.cpp:1:0:
-bstset.h: In instantiation of ‘BstSet<T>::Node* BstSet<T>::clone(BstSet<T>::Node*) [with T = std::__cxx11::basic_string<char>]’:
-bstset.h:43:44:   required from ‘BstSet<T>::BstSet(const BstSet<T>&) [with T = std::__cxx11::basic_string<char>]’
-90-tester.cpp:92:36:   required from here
-bstset.h:21:12: error: cannot convert ‘BstSet<std::__cxx11::basic_string<char> >::Node’ to ‘BstSet<std::__cxx11::basic_string<char> >::Node*’ in initialization
-     Node * newNode = Node(curr->key);
-            ^~~~~~~
-The code did not compile.  This test failed.
+The code compiled.
+  - Valgrind was clean (no errors, no memory leaks)
+Your file matched the expected output
+Testcase passed 
 -----------------------------------------------
 testcase 3 : Testing with BstSet<(a custom class we wrote)>
 ...compiling...
-In file included from 90-tester.cpp:1:0:
-bstset.h: In instantiation of ‘BstSet<T>::Node* BstSet<T>::clone(BstSet<T>::Node*) [with T = Tester]’:
-bstset.h:43:44:   required from ‘BstSet<T>::BstSet(const BstSet<T>&) [with T = Tester]’
-90-tester.cpp:92:36:   required from here
-bstset.h:21:12: error: cannot convert ‘BstSet<Tester>::Node’ to ‘BstSet<Tester>::Node*’ in initialization
-     Node * newNode = Node(curr->key);
-            ^~~~~~~
-The code did not compile.  This test failed.
+The code compiled.
+  - Valgrind was clean (no errors, no memory leaks)
+Your file matched the expected output
+Testcase passed 
 
-Overall Grade: F
+Overall Grade: A
