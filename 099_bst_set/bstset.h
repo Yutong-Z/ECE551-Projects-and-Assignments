@@ -18,7 +18,7 @@ class BstSet : public Set<T> {
     if (curr == NULL) {
       return NULL;
     }
-    Node * newNode = Node(curr->key);
+    Node * newNode = new Node(curr->key);
     newNode->left = clone(curr->left);
     newNode->right = clone(curr->right);
     return newNode;
