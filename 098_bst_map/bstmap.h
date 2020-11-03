@@ -82,7 +82,7 @@ void BstMap<K, V>::add(const K & key, const V & value) {
     if (key < (*curr)->k) {
       curr = &(*curr)->left;
     }
-    if (key > (*curr)->k) {
+    else {
       curr = &(*curr)->right;
     }
   }
@@ -102,10 +102,10 @@ const V & BstMap<K, V>::lookup(const K & key) const throw(std::invalid_argument)
     if (key < curr->k) {
       curr = curr->left;
     }
-    if (key > curr->k) {
+    else if (key > curr->k) {
       curr = curr->right;
     }
-    if (key == curr->k) {
+    else {
       return curr->v;
     }
   }
@@ -120,7 +120,7 @@ void BstMap<K, V>::remove(const K & key) {
     if (key < (*curr)->k) {
       curr = &(*curr)->left;
     }
-    if (key > (*curr)->k) {
+    else {
       curr = &(*curr)->right;
     }
   }
