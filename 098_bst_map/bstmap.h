@@ -1,6 +1,7 @@
 #ifndef __BSTMAP_H__
 #define __BSTMAP_H__
 #include <exception>
+#include <iostream>
 #include <stdexcept>
 
 #include "map.h"
@@ -18,6 +19,13 @@ class BstMap : public Map<K, V> {
   Node * root;
   Node * clone(Node * curr);
   void destory(Node * curr);
+  void print(Node * curr) {
+    if (curr != NULL) {
+      print(curr->left);
+      std::cout << "(" << curr->k << ", " << curr->v << ") ";
+      print(curr->right);
+    }
+  }
 
  public:
   BstMap() : root(NULL){};
@@ -27,6 +35,10 @@ class BstMap : public Map<K, V> {
   virtual const V & lookup(const K & key) const throw(std::invalid_argument);
   virtual void remove(const K & key);
   virtual ~BstMap<K, V>();
+  void printTree() {
+    print(root);
+    std::cout << "\n";
+  }
 };
 
 // destructor helper
@@ -43,6 +55,7 @@ void BstMap<K, V>::destory(typename BstMap<K, V>::Node * curr) {
 template<typename K, typename V>
 BstMap<K, V>::~BstMap() {
   destory(root);
+  root = NULL;
 }
 
 // copy constructor helper
@@ -140,12 +153,13 @@ void BstMap<K, V>::remove(const K & key) {
   else {
     Node ** temp = &(*curr)->left;
     while ((*temp)->right != NULL) {
-      (*curr)->k = (*temp)->k;
-      (*curr)->v = (*temp)->v;
-      Node * lTemp = (*temp)->left;
-      delete *temp;
-      *temp = lTemp;
+      temp = &(*temp)->right;
     }
+    (*curr)->k = (*temp)->k;
+    (*curr)->v = (*temp)->v;
+    Node * lTemp = (*temp)->left;
+    delete *temp;
+    *temp = lTemp;
   }
 }
 #endif
