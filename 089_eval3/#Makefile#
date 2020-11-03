@@ -1,13 +1,14 @@
 # Cite Makefile: 060eval_2/Makefile
 CCFLAGS=--std=gnu++98 -pedantic -Wall -Werror -ggdb3
-PROGS=cyoa-step1 cyoa-step2 cyoa-step3 cyoa-step4
-OBJS=$(patsubst %,%.o,$(PROGS)) cyoa.o
+PROGS=cyoa-step1 cyoa-step2 #cyoa-step3 cyoa-step4
 all: $(PROGS)
-cyoa-step%: cyoa-step%.o cyoa.o
+story-step%: cyoa-step%.o cyoa.o
 	g++ -o $@ $^
 %.o: %.cpp
 	g++ $(CFLAGS) -c $<
+
 .PHONY: clean
 clean:
-	rm -f *~ $(PROGS) $(OBJS)
+	rm -f *~ $(PROGS)
+
 cyoa.o: cyoa.h

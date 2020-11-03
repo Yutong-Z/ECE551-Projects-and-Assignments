@@ -29,28 +29,37 @@ class Choice {
 class Page {
  public:
   const unsigned int currPageNum;
-  std::vector<std::string> * lines;
+  std::vector<std::string> lines;
 
  public:
-  Page(const unsigned int n) : currPageNum(n), lines(new std::vector<std::string>()) {}
-  virtual ~Page() { delete lines; }
+  Page(const unsigned int n) : currPageNum(n), lines(std::vector<std::string>()) {}
+  virtual ~Page() {}
   virtual void printPage() = 0;
   virtual void parseNavLine(std::string & line) = 0;
   virtual bool checkEnd() = 0;
+  virtual std::vector<unsigned int> getNav();
   void printLines();
-  void addLine(std::string & line) { lines->push_back(line); }
+  void addLine(std::string & line) { lines.push_back(line); }
 };
 
 class midPage : public Page {
  private:
-  std::vector<Choice> * nav;
+  std::vector<Choice> nav;
 
  public:
-  midPage(const unsigned int n) : Page(n), nav(new std::vector<Choice>()){};
-  virtual ~midPage() { delete nav; }
+  midPage(const unsigned int n) : Page(n), nav(std::vector<Choice>()){};
+  virtual ~midPage() {}
   virtual void printPage();
   virtual void parseNavLine(std::string & line);
   virtual bool checkEnd() { return 0; }
+  virtual std::vector<unsigned int> getNav() {
+    std::vector<unsigned int> choices;
+    std::vector<Choice>::iterator it = nav.begin();
+    while (it != nav.end()) {
+      choices.push_back(it->getChoicePage());
+    }
+    return choices;
+  }
 };
 
 class endPage : public Page {
@@ -63,6 +72,16 @@ class endPage : public Page {
   virtual void printPage();
   virtual void parseNavLine(std::string & line);
   virtual bool checkEnd() { return 1; }
+  virtual std::vector<unsigned int> getNav() {
+    std::vector<unsigned int> choices;
+    if (ifWin) {
+      choices.push_back(1);
+    }
+    else {
+      choices.push_back(0);
+    }
+    return choices;
+  }
 };
 
 /* Functions */

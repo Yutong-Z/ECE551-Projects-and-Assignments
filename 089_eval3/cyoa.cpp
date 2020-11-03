@@ -5,8 +5,8 @@ Step1
  */
 
 void Page::printLines() {
-  std::vector<std::string>::iterator it = lines->begin();
-  while (it != lines->end()) {
+  std::vector<std::string>::iterator it = lines.begin();
+  while (it != lines.end()) {
     std::cout << *it << "\n";
     ++it;
   }
@@ -16,9 +16,9 @@ void midPage::printPage() {
   printLines();
   std::cout << "\n"
             << "What would you like to do?\n\n";
-  std::vector<Choice>::iterator it = nav->begin();
+  std::vector<Choice>::iterator it = nav.begin();
   unsigned int i = 1;
-  while (it != nav->end()) {
+  while (it != nav.end()) {
     std::cout << i;
     it->printChoice();
     ++it;
@@ -39,7 +39,7 @@ void midPage::parseNavLine(std::string & line) {
     exit(EXIT_FAILURE);
   }
   std::string text = line.substr(colonIdx + 1);
-  nav->push_back(Choice(pageNum, text));
+  nav.push_back(Choice(pageNum, text));
 }
 
 void endPage::printPage() {
@@ -89,7 +89,7 @@ unsigned int getPageNum(std::string & pageNumStr) {
   }
 }
 
-Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
+Page * parsePage(std::ifstream & f, unsigned int pageNum) {
   Page * currPage;
   std::string line;
   if (!getline(f, line)) {  // check if first line empty
