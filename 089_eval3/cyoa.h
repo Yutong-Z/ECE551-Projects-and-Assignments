@@ -37,7 +37,7 @@ class Page {
   virtual void printPage() = 0;
   virtual void parseNavLine(std::string & line) = 0;
   virtual bool checkEnd() = 0;
-  virtual std::vector<unsigned int> getNav();
+  virtual std::vector<unsigned int> getNav() = 0;
   void printLines();
   void addLine(std::string & line) { lines.push_back(line); }
 };
@@ -57,6 +57,7 @@ class midPage : public Page {
     std::vector<Choice>::iterator it = nav.begin();
     while (it != nav.end()) {
       choices.push_back(it->getChoicePage());
+      ++it;
     }
     return choices;
   }

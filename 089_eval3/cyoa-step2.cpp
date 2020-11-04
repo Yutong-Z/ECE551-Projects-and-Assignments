@@ -18,6 +18,7 @@ std::vector<Page *> readPages(char * directory) {
     std::ifstream f;
     f.open(fileName);
     if (!f.is_open()) {  // break loop if no next page
+      std::cout << "cant find file: " << fileName << std::endl;
       break;
     }
     pages.push_back(parsePage(f, pageNum));
@@ -39,34 +40,53 @@ verify conditions 4a 4b 4c
  */
 void checkReference(std::vector<Page *> & pages) {
   unsigned int totalNum = pages.size();
-  std::vector<Page *>::iterator it = pages.begin();
+  std::vector<Page *>::iterator itPage = pages.begin();
   bool haveWin = 0;
   bool haveLose = 0;
   std::set<unsigned int> refPages;  // A set of page that have been referenced
-  while (it != pages.end()) {
-    if ((*it)->checkEnd()) {          // encounter end page
-      if ((*it)->getNav()[0] == 0) {  // end page is lose
+  while (itPage != pages.end()) {
+    if ((*itPage)->checkEnd()) {          // encounter end page
+      if ((*itPage)->getNav()[0] == 0) {  // end page is lose
         haveLose = 1;
       }
-      if ((*it)->getNav()[0] == 1) {
+      if ((*itPage)->getNav()[0] == 1) {  // end page is win
         haveWin = 1;
       }
     }
     else {  // encounter mid page(page with choices)
-      std::vector<unsigned int> currChoices = (*it)->getNav();
+      std::vector<unsigned int> currChoices = (*itPage)->getNav();
       std::vector<unsigned int>::iterator itChoice = currChoices.begin();
       while (itChoice != currChoices.end()) {
-        if (*itChoice > totalNum || *it == 0) {
-          std::cerr << "choice refer to invalid page number: " << *it << std::endl;
+        if (*itChoice > totalNum || *itChoice == 0) {
+          std::cerr << "Choice refer to invalid page number: " << *itChoice << std::endl;
           exit(EXIT_FAILURE);
         }
         refPages.insert(*itChoice);  // add the page referenced to set
+        ++itChoice;
       }
     }
-    // check set
-    // check win/lose
-    ++it;
+    ++itPage;
   }
+  // check set
+  refPages.insert(1);  // page 1 is not asked to be referenced
+  if (refPages.size() != totalNum) {
+    std::cerr << "Not referenced valid page(s) exist!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+  // check win/lose
+  if (haveWin != 1 || haveLose != 1) {
+    std::cerr << "Can find WIN page or can find LOSE page!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
+void playCyoa(std::vector<Page *> & pages) {
+  Page * currPage = pages[1];
+  while (currPage->checkEnd() == 0) {
+    unsigned int chosen;
+    // TO DO!!!
+  }
+  currPage->printPage();
 }
 
 int main(int argc, char ** argv) {
@@ -74,9 +94,10 @@ int main(int argc, char ** argv) {
     std::cerr << "Useage: ./cyoa-step2 storyDirctoryName\n" << std::endl;
     exit(EXIT_FAILURE);
   }
-  // read each page, count total page number
-  std::vector<Page *> pages(readPages(argv[1]));
-  pages[5]->printPage();
+  // read each page, total vaild page number is size of pages vector
+  std::vector<Page *> pages = readPages(argv[1]);
+  //check reference of each vaild page
+  checkReference(pages);
   // delete each page
   deletePages(pages);
   return EXIT_SUCCESS;
