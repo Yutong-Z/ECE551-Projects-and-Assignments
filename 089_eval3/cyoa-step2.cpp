@@ -81,11 +81,28 @@ void checkReference(std::vector<Page *> & pages) {
 }
 
 void playCyoa(std::vector<Page *> & pages) {
-  Page * currPage = pages[1];
+  Page * currPage = pages[0];  // page1 is first element in vector
   while (currPage->checkEnd() == 0) {
-    unsigned int chosen;
-    // TO DO!!!
+    // print current page
+    currPage->printPage();
+    // get an input string
+    std::string input;
+    std::cin >> input;
+    unsigned int choiceNum = getPageNum(input);  // get the choice num form string
+    while (choiceNum == 0 || choiceNum > currPage->getNav().size()) {
+      // getPageNum() returns 0 if input string contains not digital char
+      // get another input if previous input is not a vaild number or larger than choice amount
+      std::cout << "That is not a valid choice, please try again\n";
+      std::string input2;
+      std::cin >> input2;
+      choiceNum = getPageNum(input2);
+    }
+    // get choice number's corresponding page number
+    unsigned int pageNum = currPage->getNav()[choiceNum - 1];
+    // pages were pushed to back of vector form first to last in sequence
+    currPage = pages[pageNum - 1];
   }
+  // print the last page with WIN or LOSE
   currPage->printPage();
 }
 
@@ -96,8 +113,10 @@ int main(int argc, char ** argv) {
   }
   // read each page, total vaild page number is size of pages vector
   std::vector<Page *> pages = readPages(argv[1]);
-  //check reference of each vaild page
+  // check reference of each vaild page
   checkReference(pages);
+  // create story
+  playCyoa(pages);
   // delete each page
   deletePages(pages);
   return EXIT_SUCCESS;
