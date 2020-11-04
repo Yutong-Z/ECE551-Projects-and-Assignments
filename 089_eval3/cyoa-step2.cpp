@@ -18,7 +18,7 @@ std::vector<Page *> readPages(char * directory) {
     std::ifstream f;
     f.open(fileName);
     if (!f.is_open()) {  // break loop if no next page
-      std::cout << "cant find file: " << fileName << std::endl;
+      //std::cout << "cant find file: " << fileName << std::endl;
       break;
     }
     pages.push_back(parsePage(f, pageNum));
