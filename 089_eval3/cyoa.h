@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -52,15 +53,7 @@ class midPage : public Page {
   virtual void printPage();
   virtual void parseNavLine(std::string & line);
   virtual bool checkEnd() { return 0; }
-  virtual std::vector<unsigned int> getNav() {
-    std::vector<unsigned int> choices;
-    std::vector<Choice>::iterator it = nav.begin();
-    while (it != nav.end()) {
-      choices.push_back(it->getChoicePage());
-      ++it;
-    }
-    return choices;
-  }
+  virtual std::vector<unsigned int> getNav();
 };
 
 class endPage : public Page {
@@ -73,20 +66,17 @@ class endPage : public Page {
   virtual void printPage();
   virtual void parseNavLine(std::string & line);
   virtual bool checkEnd() { return 1; }
-  virtual std::vector<unsigned int> getNav() {
-    std::vector<unsigned int> choices;
-    if (ifWin) {
-      choices.push_back(1);
-    }
-    else {
-      choices.push_back(0);
-    }
-    return choices;
-  }
+  virtual std::vector<unsigned int> getNav();
 };
 
 /* Functions */
 Page * parsePage(std::ifstream & f, const unsigned int pageNum);
 unsigned int getPageNum(std::string & pageNumStr);
+
+std::string getFileName(const unsigned int pageNum, char * directory);
+std::vector<Page *> readPages(char * directory);
+void deletePages(std::vector<Page *> & pages);
+void checkReference(std::vector<Page *> & pages);
+void playCyoa(std::vector<Page *> & pages);
 
 #endif
