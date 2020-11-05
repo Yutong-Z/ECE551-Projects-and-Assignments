@@ -11,7 +11,7 @@
 #include <vector>
 
 /*
-class represents a choice to go to another page
+class Choice: represents a choice to go to another page
 Fields:
   pageNum: An unsigned int represents number of page to go.
   text: The description of choice.
@@ -78,5 +78,8 @@ std::vector<Page *> readPages(char * directory);
 void deletePages(std::vector<Page *> & pages);
 void checkReference(std::vector<Page *> & pages);
 void playCyoa(std::vector<Page *> & pages);
+
+std::set<Page *> getReachableSet(std::vector<Page *> & pages);
+void printUnreach(std::set<Page *> & reachPages, unsigned int totalPageNum);
 
 #endif
