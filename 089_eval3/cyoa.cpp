@@ -25,6 +25,7 @@ void midPage::printPage() {
     i++;
   }
 }
+
 void midPage::parseNavLine(std::string & line) {
   size_t colonIdx = line.find(':');
   if (colonIdx == std::string::npos) {
@@ -38,6 +39,17 @@ void midPage::parseNavLine(std::string & line) {
     std::cerr << "Invaild page number " << pageNumStr << std::endl;
     exit(EXIT_FAILURE);
   }
+  // check choice with duplicated page number
+  std::vector<unsigned int> choices = this->getNav();
+  std::vector<unsigned int>::iterator itChoice = choices.begin();
+  while (itChoice != choices.end()) {
+    if (pageNum == *itChoice) {
+      std::cerr << "Choice refers to duplicated page number!" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+    ++itChoice;
+  }
+  // get the choice text and push back to nav field
   std::string text = line.substr(colonIdx + 1);
   nav.push_back(Choice(pageNum, text));
 }

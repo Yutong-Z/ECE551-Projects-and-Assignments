@@ -1,4 +1,5 @@
 3:Take your prize and go home
-   4:Stab the dragon in the neck
+4:Stab the dragon in the neck
+3:page3 again
 #
 You wrap the Scythian ruby in the cloak, and sneak back to where the dragon
