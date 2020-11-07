@@ -8,6 +8,7 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <utility>  //std::pair
 #include <vector>
 
 /*
@@ -31,9 +32,13 @@ class Page {
  public:
   const unsigned int currPageNum;
   std::vector<std::string> lines;
+  std::vector<std::pair<unsigned int, unsigned int> > prevPages;
 
  public:
-  Page(const unsigned int n) : currPageNum(n), lines(std::vector<std::string>()) {}
+  Page(const unsigned int n) :
+      currPageNum(n),
+      lines(std::vector<std::string>()),
+      prevPages(std::vector<std::pair<unsigned int, unsigned int> >()) {}
   virtual ~Page() {}
   virtual void printPage() = 0;
   virtual void parseNavLine(std::string & line) = 0;
