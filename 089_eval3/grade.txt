@@ -1,6 +1,6 @@
-Grading at 11/05/2020:21:06:25.474985
-For commit ID f4c6745afde1c55573d16c02b437cab3c8c94cf4
-Grading at Thu Nov  5 16:06:21 EST 2020
+Grading at 11/07/2020:03:04:35.142203
+For commit ID 5f1c6b221ff42b3787cfac76bbba1dfb55115557
+Grading at Fri Nov  6 22:04:30 EST 2020
 Doing some basic sanity checking for your submission
 
 Step 1
@@ -44,14 +44,21 @@ Your file matched the expected output
 Step 4
 Checking that cyoa-step4 compiles
 rm -f *~ cyoa-step1 cyoa-step2 cyoa-step3 cyoa-step4 cyoa-step1.o cyoa-step2.o cyoa-step3.o cyoa-step4.o cyoa.o
-The code did not compile!
+g++  -c cyoa.cpp
+g++  -c cyoa-step4.cpp
+g++ -o cyoa-step4 cyoa-step4.o cyoa.o
+rm cyoa-step4.o
+Testing ./cyoa-step4 one_win 
+Your file matched the expected output
+Testing ./cyoa-step4 story1
+Your output matched the expected output
 
 Step 1: PASSED
 Step 2: PASSED
 Step 3: PASSED
-Step 4: FAILED
+Step 4: PASSED
 
-You have NOT passed the pregrader's test cases.
-You should go back and debug the indicated step(s).
+You have passed the pregrader's test cases, but you should still
+do extensive testing of your own.
 
 Overall Grade: NO GRADE YET
