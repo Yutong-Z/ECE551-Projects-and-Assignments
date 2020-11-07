@@ -87,4 +87,11 @@ void playCyoa(std::vector<Page *> & pages);
 std::set<Page *> getReachableSet(std::vector<Page *> & pages);
 void printUnreach(std::set<Page *> & reachPages, unsigned int totalPageNum);
 
+void fillPrevs(const std::vector<Page *> & pages, const std::set<Page *> & reachPage);
+unsigned int findWinPage(const std::set<Page *> & reachPages);
+std::vector<std::pair<unsigned int, unsigned int> > findWinPath(
+    const std::vector<Page *> & pages,
+    const unsigned int winPageNum);
+void printWinPath(const std::vector<std::pair<unsigned int, unsigned int> > & winPath);
+
 #endif
