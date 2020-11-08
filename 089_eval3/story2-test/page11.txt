@@ -1,4 +1,4 @@
-LOSE
+WIN
 #
 You return home, where your cats are very impressed with your programming
 abilities.

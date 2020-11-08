@@ -17,7 +17,7 @@ int main(int argc, char ** argv) {
   unsigned int winPageNum = findWinPage(reachPages);
   if (winPageNum == 0) {  // exit if there is not a win page in set
     deletePages(pages);
-    std::cout << "There is no way to win\n" << std::endl;
+    std::cout << "There is no way to win" << std::endl;
     return EXIT_SUCCESS;
   }
   // std::cout << "Win page is Page" << winPageNum << std::endl;
