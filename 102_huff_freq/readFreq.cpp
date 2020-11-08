@@ -30,12 +30,12 @@ uint64_t * readFrequencies(const char * fname) {
     exit(EXIT_FAILURE);
   }
   uint64_t * count = new uint64_t[257]();
-  char c;
-  while (f.get(c)) {
-    if ((unsigned)c > 255) {
+  int c;
+  while ((c = f.get()) != EOF) {
+    if (c > 255) {
       continue;
     }
-    count[(unsigned)c]++;
+    count[c]++;
   }
   count[256] = 1;
   f.close();
