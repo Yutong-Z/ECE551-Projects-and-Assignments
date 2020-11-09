@@ -32,7 +32,8 @@ void writeCompressedOutput(const char * inFile,
   writeHeader(&bfw, theMap);
 
   //open the input file for reading
-  std::fstream f(inFile);
+  std::ifstream f;
+  f.open(inFile);
   if (!f.is_open()) {
     std::cerr << "Cannot open file " << inFile << std::endl;
     exit(EXIT_FAILURE);
@@ -43,6 +44,7 @@ void writeCompressedOutput(const char * inFile,
   while ((c = f.get()) != EOF) {
     if (theMap.find(c) == theMap.end()) {
       std::cerr << "Map doesn't contain character with int " << c << std::endl;
+      exit(EXIT_FAILURE);
     }
     bfw.writeBitString(theMap.find(c)->second);
   }
