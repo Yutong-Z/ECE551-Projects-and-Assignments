@@ -4,6 +4,9 @@
 Class Methods
  */
 
+/*
+Method that prints every story line in the lines field of a midPage or endPage instance
+ */
 void Page::printLines() {
   std::vector<std::string>::iterator it = lines.begin();
   while (it != lines.end()) {
@@ -12,6 +15,10 @@ void Page::printLines() {
   }
 }
 
+/*
+A virtual method of midPage (child class of Page)
+that prints choices and story of the corresponding page to output
+ */
 void midPage::printPage() {
   printLines();
   std::cout << "\n"
@@ -19,13 +26,20 @@ void midPage::printPage() {
   std::vector<Choice>::iterator it = nav.begin();
   unsigned int i = 1;
   while (it != nav.end()) {
-    std::cout << i;
+    std::cout << i << ". ";
     it->printChoice();
     ++it;
     i++;
   }
 }
 
+/*
+A virtual method of midPage (child class of Page)
+that parses a line from the navgation part (before "#" line) of a page file with choices
+and adds the choice into the choices field of the midPage instance
+Input:
+  line: reference to std::string with choice content
+ */
 void midPage::parseNavLine(std::string & line) {
   size_t colonIdx = line.find(':');
   if (colonIdx == std::string::npos) {
@@ -54,6 +68,10 @@ void midPage::parseNavLine(std::string & line) {
   nav.push_back(Choice(pageNum, text));
 }
 
+/*
+A virtual method of endPage (child class of Page)
+that prints ending and story of the corresponding page to output
+ */
 void endPage::printPage() {
   printLines();
   std::cout << "\n";
@@ -65,6 +83,14 @@ void endPage::printPage() {
   }
 }
 
+/*
+A virtual method of endPage (child class of Page)
+that parses a line from the navgation part (before "#" line) of a page file with WIN or LOSE line
+and sets the ifWin field of the midPage instance as:
+1 if line refers to  WIN or 0 if line refers to LOSE
+Input:
+  line: reference to std::string that should contain either "WIN" or "LOSE"
+ */
 void endPage::parseNavLine(std::string & line) {
   if (line.compare("WIN") == 0) {
     ifWin = 1;
@@ -73,11 +99,14 @@ void endPage::parseNavLine(std::string & line) {
     ifWin = 0;
   }
   else {
-    std::cerr << "Input line of parseStatus is not WIN\n or LOSE\n" << std::endl;
+    std::cerr << "Input line of parseStatus is neither WIN\n nor LOSE\n" << std::endl;
     exit(EXIT_FAILURE);
   }
 }
 
+/*
+A virtual method of midPage (child class of Page)
+*/
 std::vector<unsigned int> midPage::getNav() {
   std::vector<unsigned int> choices;
   std::vector<Choice>::iterator it = nav.begin();

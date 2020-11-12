@@ -24,7 +24,7 @@ class Choice {
 
  public:
   Choice(const unsigned int p, const std::string & t) : pageNum(p), text(t){};
-  void printChoice() { std::cout << ". " << text << "\n"; }
+  void printChoice() { std::cout << text << "\n"; }
   unsigned int getChoicePage() { return pageNum; }
 };
 
