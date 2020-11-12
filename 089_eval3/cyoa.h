@@ -76,7 +76,7 @@ class endPage : public Page {
 
 /* Functions */
 Page * parsePage(std::ifstream & f, const unsigned int pageNum);
-unsigned int getPageNum(std::string & pageNumStr);
+unsigned int getNumFromStr(std::string & pageNumStr);
 
 std::string getFileName(const unsigned int pageNum, char * directory);
 std::vector<Page *> readPages(char * directory);

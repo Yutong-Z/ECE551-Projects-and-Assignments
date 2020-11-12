@@ -48,7 +48,7 @@ void midPage::parseNavLine(std::string & line) {
     exit(EXIT_FAILURE);
   }
   std::string pageNumStr = line.substr(0, colonIdx);
-  unsigned int pageNum = getPageNum(pageNumStr);
+  unsigned int pageNum = getNumFromStr(pageNumStr);
   if (pageNum == 0) {
     std::cerr << "Invaild page number " << pageNumStr << std::endl;
     exit(EXIT_FAILURE);
@@ -106,6 +106,10 @@ void endPage::parseNavLine(std::string & line) {
 
 /*
 A virtual method of midPage (child class of Page)
+that returns the page numbers in choices field as a vector
+Output:
+  A vector that contains the page numbers in choices field
+  with the sequence as they appear in navigation part of page file
 */
 std::vector<unsigned int> midPage::getNav() {
   std::vector<unsigned int> choices;
@@ -117,6 +121,13 @@ std::vector<unsigned int> midPage::getNav() {
   return choices;
 }
 
+/*
+A virtual method of endPage (child class of Page)
+that returns a vector that contains the ending status in ifWin field of the page
+Output:
+  Size 1 vector contains 1: if ifWin of this page is TRUE (win end page)
+  Size 1 vector contains 0: if ifWin of this page is FALSE (lose end page)
+*/
 std::vector<unsigned int> endPage::getNav() {
   std::vector<unsigned int> choices;
   if (ifWin) {
@@ -140,7 +151,7 @@ Returns:
   0: If the input string represents negative number or contains not digital char.
   unsigned int pageNum: If the input string could be converted to vaild page number.
  */
-unsigned int getPageNum(std::string & pageNumStr) {
+unsigned int getNumFromStr(std::string & pageNumStr) {
   unsigned int pageNum;
   std::stringstream ss1(pageNumStr);
   ss1 >> pageNum;
@@ -278,14 +289,14 @@ void playCyoa(std::vector<Page *> & pages) {
     // get an input string
     std::string input;
     std::cin >> input;
-    unsigned int choiceNum = getPageNum(input);  // get the choice num form string
+    unsigned int choiceNum = getNumFromStr(input);  // get the choice num form string
     while (choiceNum == 0 || choiceNum > currPage->getNav().size()) {
       // getPageNum() returns 0 if input string contains not digital char
       // get another input if previous input is not a vaild number or larger than choice amount
       std::cout << "That is not a valid choice, please try again\n";
       std::string input2;
       std::cin >> input2;
-      choiceNum = getPageNum(input2);
+      choiceNum = getNumFromStr(input2);
     }
     // get choice number's corresponding page number
     unsigned int pageNum = currPage->getNav()[choiceNum - 1];
