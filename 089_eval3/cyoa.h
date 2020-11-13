@@ -78,8 +78,8 @@ class endPage : public Page {
 Page * parsePage(std::ifstream & f, const unsigned int pageNum);
 unsigned int getNumFromStr(std::string & pageNumStr);
 
-std::string getFileName(const unsigned int pageNum, char * directory);
-std::vector<Page *> readPages(char * directory);
+std::string getFileName(const unsigned int pageNum, const char * directory);
+std::vector<Page *> readPages(const char * directory);
 void deletePages(std::vector<Page *> & pages);
 void checkReference(std::vector<Page *> & pages);
 void playCyoa(std::vector<Page *> & pages);

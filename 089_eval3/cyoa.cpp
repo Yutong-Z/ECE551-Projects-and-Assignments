@@ -224,7 +224,7 @@ Return:
   str::string contains file name starting with its directory
   (Ex. getFilename(11, "story") returns std::string that contains story/page11.txt)
  */
-std::string getFileName(const unsigned int pageNum, char * directory) {
+std::string getFileName(const unsigned int pageNum, const char * directory) {
   std::stringstream ss;
   ss << directory << "/page" << pageNum << ".txt";
   std::string fileName = ss.str();
@@ -232,13 +232,13 @@ std::string getFileName(const unsigned int pageNum, char * directory) {
 }
 
 /*
-Function that pares all pages with consecutive page number starting from 1 in a directory
+Function that read all pages with consecutive page number starting from 1 in a directory
 Input:
   directory: an array of characters that represents the directory
 Return:
-  A vector of pointer to pages that are parsed with sequence of page number of each page 
+  A vector of pointer to Page (minPage or endPage) that are parsed with sequence of page number of each page 
  */
-std::vector<Page *> readPages(char * directory) {
+std::vector<Page *> readPages(const char * directory) {
   std::vector<Page *> pages = std::vector<Page *>();
   unsigned int pageNum = 1;
   std::string fileName;
@@ -257,6 +257,11 @@ std::vector<Page *> readPages(char * directory) {
   return pages;
 }
 
+/*
+Function that delet every Page that the input vector points to
+Input:
+  A reference to a vector of pointer to Page that are allocted on heap
+ */
 void deletePages(std::vector<Page *> & pages) {
   std::vector<Page *>::iterator it = pages.begin();
   while (it != pages.end()) {
@@ -266,7 +271,12 @@ void deletePages(std::vector<Page *> & pages) {
 }
 
 /*
-verify conditions 4a 4b 4c
+Function that verify conditions 4a 4b 4c in step2 for the group of pages pointed by input vector
+4a. Every page that is referenced by a choice is valid.
+4b. Every page (except page 1) is referenced by at least one *other* page's choices.
+4c. At least one page must be a WIN page and at least one page must be a LOSE page.
+Input:
+  A reference to a vector of pointer to Page that are allocted on heap
  */
 void checkReference(std::vector<Page *> & pages) {
   unsigned int totalNum = pages.size();
@@ -275,7 +285,7 @@ void checkReference(std::vector<Page *> & pages) {
   bool haveLose = 0;
   std::set<unsigned int> refPages;  // A set of page that have been referenced
   while (itPage != pages.end()) {
-    if ((*itPage)->checkEnd()) {          // encounter end page
+    if ((*itPage)->checkEnd()) {          // encounter end page (page with WIN or LOSE)
       if ((*itPage)->getNav()[0] == 0) {  // end page is lose
         haveLose = 1;
       }
@@ -310,6 +320,13 @@ void checkReference(std::vector<Page *> & pages) {
   }
 }
 
+/*
+Function that plays the choose your own adventure game with user
+and prints pages with users' choices
+with the beginning page, page 1, always printed
+Input:
+  A reference to a vector of pointer to Page that are allocted on heap
+ */
 void playCyoa(std::vector<Page *> & pages) {
   Page * currPage = pages[0];  // page1 is first element in vector
   while (currPage->checkEnd() == 0) {
