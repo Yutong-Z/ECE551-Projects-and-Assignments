@@ -107,7 +107,7 @@ void endPage::parseNavLine(std::string & line) {
 /*
 A virtual method of midPage (child class of Page)
 that returns the page numbers in choices field as a vector
-Output:
+Returns:
   A vector that contains the page numbers in choices field
   with the sequence as they appear in navigation part of page file
 */
@@ -124,7 +124,7 @@ std::vector<unsigned int> midPage::getNav() {
 /*
 A virtual method of endPage (child class of Page)
 that returns a vector that contains the ending status in ifWin field of the page
-Output:
+Returns:
   Size 1 vector contains 1: if ifWin of this page is TRUE (win end page)
   Size 1 vector contains 0: if ifWin of this page is FALSE (lose end page)
 */
@@ -144,29 +144,40 @@ Step1
  */
 
 /*
-Convert a string pageNumStr to an unsigned int page numer.
+Function that converts a string strNum to an number that is larger than 0.
 Input:
-  std::string & pageNumStr: A reference to string parsed from the page file, navigation part, the substring before ':' in choice line.
+  strNum: A reference to string that should be conposed with digital characters and represents a positive number.
+  In step1, the string is form the page file, navigation part, the substring before ':' in choice line.
 Returns:
-  0: If the input string represents negative number or contains not digital char.
+  0: If the input string represents negative number, zero, or contains not digital char.
   unsigned int pageNum: If the input string could be converted to vaild page number.
  */
-unsigned int getNumFromStr(std::string & pageNumStr) {
-  unsigned int pageNum;
-  std::stringstream ss1(pageNumStr);
-  ss1 >> pageNum;
+unsigned int getNumFromStr(const std::string & strNum) {
+  unsigned int num;
+  std::stringstream ss1(strNum);
+  ss1 >> num;
   std::stringstream ss2;
-  ss2 << pageNum;  // Convert the extracted number back to stringstream
-  if (pageNumStr.compare(ss2.str()) != 0) {
+  ss2 << num;  // Convert the extracted number back to stringstream
+  if (strNum.compare(ss2.str()) != 0) {
     // Invalid page number pageNumStr if the string converted back is different from input
     return 0;
   }
   else {
-    return pageNum;
+    return num;
   }
 }
 
-Page * parsePage(std::ifstream & f, unsigned int pageNum) {
+/*
+Function that parse one page file
+Input:
+  f: A reference to opened file in std::ifstream type
+  pageNum: The page number of the page to be parsed (Ex. 11 for page11.txt)
+Returns:
+  A pointer to a instance of Page (static type) on heap
+  If the page parsed is WIN or LOSE page, the dynamic type of instance returned is endPage
+  If the page parsed contains choices, the dynamic type of instance returned is midPage
+ */
+Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
   Page * currPage;
   std::string line;
   if (!getline(f, line)) {  // check if first line empty
@@ -203,6 +214,7 @@ Page * parsePage(std::ifstream & f, unsigned int pageNum) {
 /*
 Step2
  */
+
 std::string getFileName(const unsigned int pageNum, char * directory) {
   std::stringstream ss;
   ss << directory << "/page" << pageNum << ".txt";
@@ -291,7 +303,7 @@ void playCyoa(std::vector<Page *> & pages) {
     std::cin >> input;
     unsigned int choiceNum = getNumFromStr(input);  // get the choice num form string
     while (choiceNum == 0 || choiceNum > currPage->getNav().size()) {
-      // getPageNum() returns 0 if input string contains not digital char
+      // getNumFromStr() returns 0 if input string contains not digital char, or represents negative number or zero
       // get another input if previous input is not a vaild number or larger than choice amount
       std::cout << "That is not a valid choice, please try again\n";
       std::string input2;
