@@ -152,7 +152,7 @@ Returns:
   0: If the input string represents negative number, zero, or contains not digital char.
   unsigned int pageNum: If the input string could be converted to vaild page number.
  */
-unsigned int getNumFromStr(const std::string & strNum) {
+unsigned int getNumFromStr(std::string & strNum) {
   unsigned int num;
   std::stringstream ss1(strNum);
   ss1 >> num;
