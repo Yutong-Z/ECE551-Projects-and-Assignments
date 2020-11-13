@@ -215,6 +215,15 @@ Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
 Step2
  */
 
+/*
+Function that converts an unsiged int to a string of file name starting with its directory
+Inputs:
+  pageNum: an unsigned int represents the page number of story book
+  directory: an array of characters that represents the directory
+Return:
+  str::string contains file name starting with its directory
+  (Ex. getFilename(11, "story") returns std::string that contains story/page11.txt)
+ */
 std::string getFileName(const unsigned int pageNum, char * directory) {
   std::stringstream ss;
   ss << directory << "/page" << pageNum << ".txt";
@@ -222,6 +231,13 @@ std::string getFileName(const unsigned int pageNum, char * directory) {
   return fileName;
 }
 
+/*
+Function that pares all pages with consecutive page number starting from 1 in a directory
+Input:
+  directory: an array of characters that represents the directory
+Return:
+  A vector of pointer to pages that are parsed with sequence of page number of each page 
+ */
 std::vector<Page *> readPages(char * directory) {
   std::vector<Page *> pages = std::vector<Page *>();
   unsigned int pageNum = 1;
@@ -230,12 +246,13 @@ std::vector<Page *> readPages(char * directory) {
     fileName = getFileName(pageNum, directory);
     std::ifstream f;
     f.open(fileName);
-    if (!f.is_open()) {  // break loop if no next page
+    if (!f.is_open()) {  // break loop if next page does not exit
       //std::cout << "cant find file: " << fileName << std::endl;
       break;
     }
     pages.push_back(parsePage(f, pageNum));
     pageNum++;
+    f.close();
   }
   return pages;
 }
