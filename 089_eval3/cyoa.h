@@ -12,10 +12,16 @@
 #include <vector>
 
 /*
-class Choice: represents a choice to go to another page
-Fields:
+class Choice:
+  represents a choice to go to another page.
+
+Fields (private):
   pageNum: An unsigned int represents number of page to go.
   text: The description of choice.
+
+Methods (Public):
+  printChoice: Print the text (parsed from story page file) of choice.
+  getChoicePage: get the page number to go of choice.
  */
 class Choice {
  private:
@@ -28,6 +34,32 @@ class Choice {
   unsigned int getChoicePage() const { return pageNum; }
 };
 
+/*
+abstract class Page:
+  has two concrete subclass: midPage, endPage
+  represents a page in story.
+
+Field (private):
+  lines: a vector of std::string that contains each line after '#' in a vaild page file.
+
+Field (public):
+  currPageNum: a const unsigned int represents the page number of this page.
+  prevPages: a vector of std::pair represents a list of pages that can come to this page.
+    for each pair, first of pair is the page number of page that can come to this page,
+    and second of pair is the choice number that lead the prevous page to this page.
+
+Methods (public):
+  printPage: prints the content of this page, and choices or win/lose ending of this page.
+  parseNavLine: parses a line from the navigation part of page file and checks format of the line
+    and adds the information parsed to this page. (check more detailed introduction in cyoa.cpp)
+  checkEnd: check if this page is a end page (page contains WIN/LOSE) or not.
+    If it is an end page (endPage dymnamic type instance), returns 1, otherwise, returns 0.
+  getNav: gets the choices' page number to go as a vector with the sequence parsed of this page
+    or gets a size 1 vector conatins 1 for WIN page and 0 for LOSE page.
+    (check more detailed introduction in cyoa.cpp)
+  printLines: prints lines field of this page to stdout.
+  addLine: adds the input line to lines field's vector. Use for parsing page file.
+ */
 class Page {
  private:
   std::vector<std::string> lines;
@@ -41,7 +73,7 @@ class Page {
       lines(std::vector<std::string>()),
       currPageNum(n),
       prevPages(std::vector<std::pair<unsigned int, unsigned int> >()) {}
-  virtual ~Page() {}
+  virtual ~Page() {}  // empty destructor, no need to wirte for rule of three
   virtual void printPage() const = 0;
   virtual void parseNavLine(std::string & line) = 0;
   virtual bool checkEnd() const = 0;
@@ -50,6 +82,17 @@ class Page {
   void addLine(std::string & line) { lines.push_back(line); }
 };
 
+/*
+class midPage:
+  concrete subcalss of Page.
+  represents a page with choices in its navigation part.
+
+Field (private):
+  nav: A vector of instance of Choice class, represents all choices the this page has.
+
+Methods (Public):
+  As introduced in Page class.
+ */
 class midPage : public Page {
  private:
   std::vector<Choice> nav;
@@ -62,6 +105,17 @@ class midPage : public Page {
   virtual std::vector<unsigned int> getNav() const;
 };
 
+/*
+class endPage:
+  concrete subclass of Page.
+  represents a page with WIN or LOSE line in navigation part.
+
+Field (private):
+  ifWin: 1 if the navigation part is WIN, 0 if navigation part is LOSE.
+
+Methods (public):
+   As introduced in Page class.
+ */
 class endPage : public Page {
  private:
   bool ifWin;
