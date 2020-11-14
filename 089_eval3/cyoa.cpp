@@ -186,13 +186,13 @@ Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
   }
   // first line is WIN or LOSE status line
   if (line.compare("WIN") == 0 || line.compare("LOSE") == 0) {
-    currPage = new endPage(pageNum, 0);
+    currPage = new endPage(pageNum, 0);  // construct endPage
     currPage->parseNavLine(line);
     getline(f, line);  // get the line starts with #
   }
   // first line is choice line
   else {
-    currPage = new midPage(pageNum);
+    currPage = new midPage(pageNum);  // construc midPage
     currPage->parseNavLine(line);
     while (getline(f, line)) {
       if (line[0] == '#') {
@@ -201,10 +201,12 @@ Page * parsePage(std::ifstream & f, const unsigned int pageNum) {
       currPage->parseNavLine(line);
     }
   }
+  // now, line shold be the line starts with '#'
   if (line[0] != '#') {
     std::cerr << "Cannot find line begins with '#' after navigation part!" << std::endl;
     exit(EXIT_FAILURE);
   }
+  // add all lines after the '#' line into Page instance
   while (getline(f, line)) {
     currPage->addLine(line);
   }
@@ -260,7 +262,7 @@ std::vector<Page *> readPages(const char * directory) {
 /*
 Function that delet every Page that the input vector points to
 Input:
-  A reference to a vector of pointer to Page that are allocted on heap
+  pages: A reference to a vector of pointer to Page that are allocted on heap
  */
 void deletePages(std::vector<Page *> & pages) {
   std::vector<Page *>::iterator it = pages.begin();
@@ -276,7 +278,7 @@ Function that verify conditions 4a 4b 4c in step2 for the group of pages pointed
 4b. Every page (except page 1) is referenced by at least one *other* page's choices.
 4c. At least one page must be a WIN page and at least one page must be a LOSE page.
 Input:
-  A reference to a vector of pointer to Page that are allocted on heap
+  pages: A reference to a vector of pointer to Page that are allocted on heap
  */
 void checkReference(std::vector<Page *> & pages) {
   unsigned int totalNum = pages.size();
@@ -325,7 +327,7 @@ Function that plays the choose your own adventure game with user
 and prints pages with users' choices
 with the beginning page, page 1, always printed
 Input:
-  A reference to a vector of pointer to Page that are allocted on heap
+  pages: A reference to a vector of pointer to Page that are allocted on heap
  */
 void playCyoa(std::vector<Page *> & pages) {
   Page * currPage = pages[0];  // page1 is first element in vector
@@ -356,6 +358,15 @@ void playCyoa(std::vector<Page *> & pages) {
 /*
 Step3
 */
+
+/*
+Function that checks for page reachablilty
+and insert the pointers points to each reachable page into a set
+Input:
+  pages: A reference to a vector of pointer to Page that are allocted on heap
+Return:
+  A set that contains pointers to all reachable pages
+ */
 std::set<Page *> getReachableSet(std::vector<Page *> & pages) {
   std::set<Page *> reachPages;
   std::set<Page *> temp;
@@ -382,17 +393,28 @@ std::set<Page *> getReachableSet(std::vector<Page *> & pages) {
   return reachPages;
 }
 
+/*
+Fnuction that prints out the message of the unreachable pages of story.
+Inputs:
+  reachPages: A set that contains pointers to all reachable pages
+  totalPageNum: The number of pages in the story (pages with not consecutive page number doesn't count)
+ */
 void printUnreach(std::set<Page *> & reachPages, unsigned int totalPageNum) {
+  // for each page's number (num) in story
   for (unsigned int num = 1; num <= totalPageNum; num++) {
     bool found = 0;
     std::set<Page *>::iterator itPage = reachPages.begin();
     while (itPage != reachPages.end()) {
+      // if there is a pointer to page in reachable set has the same page number with num
+      // found num in reachable set, break the inner loop
       if ((*itPage)->currPageNum == num) {
         found = 1;
         break;
       }
       ++itPage;
     }
+    // if cannot find num after check each page's number in reachable set
+    // print the message of the unreachable page number (num)
     if (found == 0) {
       std::cout << "Page " << num << " is not reachable\n";
     }
