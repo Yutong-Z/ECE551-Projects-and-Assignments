@@ -7,8 +7,8 @@ Class Methods
 /*
 Method that prints every story line in the lines field of a midPage or endPage instance
  */
-void Page::printLines() {
-  std::vector<std::string>::iterator it = lines.begin();
+void Page::printLines() const {
+  std::vector<std::string>::const_iterator it = lines.begin();
   while (it != lines.end()) {
     std::cout << *it << "\n";
     ++it;
@@ -19,11 +19,11 @@ void Page::printLines() {
 A virtual method of midPage (child class of Page)
 that prints choices and story of the corresponding page to output
  */
-void midPage::printPage() {
+void midPage::printPage() const {
   printLines();
   std::cout << "\n"
             << "What would you like to do?\n\n";
-  std::vector<Choice>::iterator it = nav.begin();
+  std::vector<Choice>::const_iterator it = nav.begin();
   unsigned int i = 1;
   while (it != nav.end()) {
     std::cout << i << ". ";
@@ -72,7 +72,7 @@ void midPage::parseNavLine(std::string & line) {
 A virtual method of endPage (child class of Page)
 that prints ending and story of the corresponding page to output
  */
-void endPage::printPage() {
+void endPage::printPage() const {
   printLines();
   std::cout << "\n";
   if (ifWin == 1) {
@@ -111,9 +111,9 @@ Returns:
   A vector that contains the page numbers in choices field
   with the sequence as they appear in navigation part of page file
 */
-std::vector<unsigned int> midPage::getNav() {
+std::vector<unsigned int> midPage::getNav() const {
   std::vector<unsigned int> choices;
-  std::vector<Choice>::iterator it = nav.begin();
+  std::vector<Choice>::const_iterator it = nav.begin();
   while (it != nav.end()) {
     choices.push_back(it->getChoicePage());
     ++it;
@@ -128,7 +128,7 @@ Returns:
   Size 1 vector contains 1: if ifWin of this page is TRUE (win end page)
   Size 1 vector contains 0: if ifWin of this page is FALSE (lose end page)
 */
-std::vector<unsigned int> endPage::getNav() {
+std::vector<unsigned int> endPage::getNav() const {
   std::vector<unsigned int> choices;
   if (ifWin) {
     choices.push_back(1);
@@ -152,7 +152,7 @@ Returns:
   0: If the input string represents negative number, zero, or contains not digital char.
   unsigned int pageNum: If the input string could be converted to vaild page number.
  */
-unsigned int getNumFromStr(std::string & strNum) {
+unsigned int getNumFromStr(const std::string & strNum) {
   unsigned int num;
   std::stringstream ss1(strNum);
   ss1 >> num;
@@ -280,9 +280,9 @@ Function that verify conditions 4a 4b 4c in step2 for the group of pages pointed
 Input:
   pages: A reference to a vector of pointer to Page that are allocted on heap
  */
-void checkReference(std::vector<Page *> & pages) {
+void checkReference(const std::vector<Page *> & pages) {
   unsigned int totalNum = pages.size();
-  std::vector<Page *>::iterator itPage = pages.begin();
+  std::vector<Page *>::const_iterator itPage = pages.begin();
   bool haveWin = 0;
   bool haveLose = 0;
   std::set<unsigned int> refPages;  // A set of page that have been referenced
@@ -329,7 +329,7 @@ with the beginning page, page 1, always printed
 Input:
   pages: A reference to a vector of pointer to Page that are allocted on heap
  */
-void playCyoa(std::vector<Page *> & pages) {
+void playCyoa(const std::vector<Page *> & pages) {
   Page * currPage = pages[0];  // page1 is first element in vector
   while (currPage->checkEnd() == 0) {
     // print current page
@@ -367,7 +367,7 @@ Input:
 Return:
   A set that contains pointers to all reachable pages
  */
-std::set<Page *> getReachableSet(std::vector<Page *> & pages) {
+std::set<Page *> getReachableSet(const std::vector<Page *> & pages) {
   std::set<Page *> reachPages;
   std::set<Page *> temp;
   reachPages.insert(pages[0]);  // insert pointer to page1
@@ -399,7 +399,7 @@ Inputs:
   reachPages: A set that contains pointers to all reachable pages
   totalPageNum: The number of pages in the story (pages with not consecutive page number doesn't count)
  */
-void printUnreach(std::set<Page *> & reachPages, unsigned int totalPageNum) {
+void printUnreach(const std::set<Page *> & reachPages, const unsigned int totalPageNum) {
   // for each page's number (num) in story
   for (unsigned int num = 1; num <= totalPageNum; num++) {
     bool found = 0;
