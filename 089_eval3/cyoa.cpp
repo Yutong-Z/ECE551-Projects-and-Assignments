@@ -426,21 +426,26 @@ Step4
  */
 
 /*
-prev pages will only be pages in reachable set 
+Function that fills the prev field of all pages in story.
+prev pages number and choice pair filled in will only be pages and choices from reachable set 
+Inputs:
+  pages: A reference to a vector of pointer to Page that are allocted on heap
+  reachPage: A set that contains pointers to all reachable pages 
  */
-void fillPrevs(const std::vector<Page *> & pages, const std::set<Page *> & reachPage) {
-  std::set<Page *>::iterator itPage = reachPage.begin();
-  while (itPage != reachPage.end()) {
+void fillPrevs(const std::vector<Page *> & pages, const std::set<Page *> & reachPages) {
+  std::set<Page *>::iterator itPage = reachPages.begin();
+  while (itPage != reachPages.end()) {
     // iterate through each page in reachable set
     if ((*itPage)->checkEnd() == 0) {
-      // iterate through choices of page if not WIN or LOSE page
+      // get choices of page if not WIN or LOSE page
       std::vector<unsigned int> choices = (*itPage)->getNav();
+      // iterate through choices of page with for loop
       for (unsigned int choiceNum = 1; choiceNum <= choices.size(); choiceNum++) {
         // pageNum the choice refers to
         unsigned int pageNum = choices[choiceNum - 1];
         // push the pair to prevPages field of page that the choice refers to
-        // prevPages.first is page number iterated in set
-        // prevPages.second is the iterated choice number in the iterated page
+        // prevPages.first is current page number iterated in set
+        // prevPages.second is the iterated choice number in the current page intrated in set
         pages[pageNum - 1]->prevPages.push_back(
             std::pair<unsigned int, unsigned int>((*itPage)->currPageNum, choiceNum));
       }
@@ -449,6 +454,15 @@ void fillPrevs(const std::vector<Page *> & pages, const std::set<Page *> & reach
   }
 }
 
+/*
+Function that returns a page's number with WIN navgation part in corresponding page.
+Input:
+  reachPages: A set that contains pointers to all reachable pages.
+Return:
+  A pages number with WIN navgation part in corresponding page.
+  If there is miltiple WIN pages,
+  the function returns the first WIN page it encountered from iteration on reachable page set. 
+ */
 unsigned int findWinPage(const std::set<Page *> & reachPages) {
   std::set<Page *>::iterator itPage = reachPages.begin();
   while (itPage != reachPages.end()) {
@@ -460,6 +474,21 @@ unsigned int findWinPage(const std::set<Page *> & reachPages) {
   return 0;
 }
 
+/*
+Function that traces back with prevous page information (prev filed)
+from a win page to the start page (page 1)
+and returns the trace back path, which is the reversed win path.
+Inputs:
+  pages:
+  winPageNum:
+Return:
+  A vector of std::pair<unsigned int, unsigned int>
+  For each pair, first filed is the page number
+  second filed is the choice number to go to next page in win path.
+  Because the vector returns is reversed win path,
+  the first pair in the vector contains WIN page number,
+  the last pair in the vector contains page number 1 and choice numer from page 1 to next page. 
+ */
 std::vector<std::pair<unsigned int, unsigned int> > findWinPath(
     const std::vector<Page *> & pages,
     const unsigned int winPageNum) {
@@ -467,16 +496,26 @@ std::vector<std::pair<unsigned int, unsigned int> > findWinPath(
   unsigned int currPageNum = winPageNum;
   std::pair<unsigned int, unsigned int> currPair(winPageNum, 0);
   winPath.push_back(currPair);
+  // while the first page has not been reached in trace back procedure
   while (currPageNum != 1) {
+    // replace current page and choice pair to one of the prevous page and choice pair
     currPair = pages[currPageNum - 1]->prevPages.front();
+    // push the new pair into path
     winPath.push_back(currPair);
     currPageNum = currPair.first;
   }
   return winPath;
 }
 
+/*
+Function that print out the message of win path.
+Input path is the reversed win path returned from finWinPth function,
+so this function do iteration and print each pair reversely.
+Input:
+  winPath: A vector of std::pair<unsigned int, unsigned int> that should be returned from findWinPath function.
+ */
 void printWinPath(const std::vector<std::pair<unsigned int, unsigned int> > & winPath) {
-  // reversely print  winPath to make it from first page to win page
+  // reversely print reversed win path to make it from first page to win page
   std::vector<std::pair<unsigned int, unsigned int> >::const_reverse_iterator itPair =
       winPath.rbegin();
   while (itPair + 1 != winPath.rend()) {
