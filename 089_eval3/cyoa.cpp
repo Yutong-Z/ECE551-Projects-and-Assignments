@@ -317,7 +317,7 @@ void checkReference(const std::vector<Page *> & pages) {
   }
   // check win/lose
   if (haveWin != 1 || haveLose != 1) {
-    std::cerr << "Can find WIN page or can find LOSE page!" << std::endl;
+    std::cerr << "Cannot find WIN page or cannot find LOSE page!" << std::endl;
     exit(EXIT_FAILURE);
   }
 }

@@ -1,7 +1,8 @@
-11:Go to Denevieve for help.
 12:Go to Grew for help.
 7:Go alone.
 3:make this page not reachable
+#
+11:Go to Denevieve for help. make page 11 not referenced
 #toaster
 As you take the magic toaster from the wizard's hand, he disappears in a
 puff of smoke. You decide that you should give the toaster a try before you
